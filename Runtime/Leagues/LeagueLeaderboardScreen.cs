@@ -77,7 +77,13 @@ namespace LionStudios.Suite.Leaderboards.Fake
             gameObject.SetActive(true);
             bool hasOutdatedScores = leaguesManager.HasOutdatedScores();
             LeaderboardCalculatedData scores = hasOutdatedScores ? leaguesManager.GetStoredScores() : (leaguesManager.HasJoined ? leaguesManager.GetCurrentScores() : leaguesManager.GetInitialScores());
-            entriesDisplay.Init(scores, leaguesManager.promoteCount, leaguesManager.CurrentLeague < leaguesManager.leagues.Count - 1, leaguesManager.CurrentLeague > 0, leaguesManager.animatePlayerOnly);
+            entriesDisplay.Init(scores, 
+                leaguesManager.promoteCount, 
+                leaguesManager.CurrentLeague < leaguesManager.leagues.Count - 1, 
+                leaguesManager.CurrentLeague > 0, leaguesManager.animatePlayerOnly, 
+                leaguesManager.perRankTime, 
+                leaguesManager.maxPlayerAnimationTime,
+                leaguesManager.minPlayerAnimationTime);
             gameObject.SetActive(false);
             isInitializing = false;
         }

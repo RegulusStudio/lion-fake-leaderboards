@@ -62,8 +62,14 @@ namespace LionStudios.Suite.Leaderboards.Fake
             LeaderboardCalculatedData scores = hasOutdatedScores
                 ? leaguesManager.GetStoredScores()
                 : (leaguesManager.HasJoined ? leaguesManager.GetCurrentScores() : leaguesManager.GetInitialScores());
-            entriesDisplay.Init(scores, leaguesManager.promoteCount,
-                leaguesManager.CurrentLeague < leaguesManager.leagues.Count - 1, leaguesManager.CurrentLeague > 0, leaguesManager.animatePlayerOnly);
+            entriesDisplay.Init(scores, 
+                leaguesManager.promoteCount, 
+                leaguesManager.CurrentLeague < leaguesManager.leagues.Count - 1, 
+                leaguesManager.CurrentLeague > 0, 
+                leaguesManager.animatePlayerOnly,
+                leaguesManager.perRankTime,
+                leaguesManager.maxPlayerAnimationTime,
+                leaguesManager.minPlayerAnimationTime);
             isInitializing = false;
 
             _currentLeagueNameDisplay.Init(leaguesManager);

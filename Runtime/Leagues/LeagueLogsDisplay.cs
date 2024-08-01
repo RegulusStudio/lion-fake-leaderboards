@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using Button = UnityEngine.UI.Button;
@@ -16,6 +17,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
         private float lastClick;
         private int clicks;
         private LeaguesManager leaguesManager;
+
+        internal static bool IsDebugModeEnabled { private set; get; }
         
         private void Awake()
         {
@@ -23,6 +26,16 @@ namespace LionStudios.Suite.Leaderboards.Fake
             button.onClick.AddListener(OnClick);
             scoreButton.onClick.AddListener(Score);
             gameObject.SetActive(false);
+        }
+
+        private void OnEnable()
+        {
+            IsDebugModeEnabled = true;
+        }
+
+        private void OnDisable()
+        {
+            IsDebugModeEnabled = false;
         }
 
         private void OnClick()

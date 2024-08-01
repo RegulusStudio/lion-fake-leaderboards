@@ -61,8 +61,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
 		public static void DestroyChildrenImmediate(this Transform root, params Transform[] exceptions)
 		{
-			List<Transform> excList = new List<Transform>(exceptions);
-			int childCount = root.childCount;
+			HashSet<Transform> excList = new HashSet<Transform>(exceptions);
 			for (int i = root.childCount - 1; i >= 0; i--)
 			{
 				Transform t = root.GetChild(i);

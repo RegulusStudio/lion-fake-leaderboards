@@ -29,13 +29,16 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] private GameObject openedParentChestObject;
         [SerializeField] private GameObject rankingInfoSection;
         
+        [SerializeField] private bool flyOutRewards = true;
+        
         private Canvas sourceCanvas;
         private bool ChestOpened;
+        internal int rank;
 
         public void Init(LeaguesManager manager, LeaderboardCalculatedData scores, int promoteCount)
         {
             sourceCanvas = transform.GetComponent<Canvas>();
-            int rank = scores.GetPlayerIndex();
+            rank = scores.GetPlayerIndex();
             bool hasPromotionZone = manager.CurrentLeague < manager.leagues.Count - 1;
             bool hasDemotionZone = manager.CurrentLeague > 0;
 
@@ -58,7 +61,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             {
                 manager.LeagueDown();
                 recapTitleLbl.text = $"You finished {rank+1}{StatUtils.OrdinalSuffix(rank+1)}! ";
-                recapMessageLbl.text = $"Sorry! You're demoted to the {manager.leagues[manager.CurrentLeague].name} league.\" \n Don't let this pull you down!";
+                recapMessageLbl.text = $"Sorry! You're demoted to the {manager.leagues[manager.CurrentLeague].name} league. \n Don't let this pull you down!";
                 LeaguesAnalytics.FireLeagueEndEvents(LeaguesAnalytics.MissionType.Failed, manager, scores);
             }
             else
@@ -108,17 +111,25 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 {
                     if (ChestOpened)
                     {
-                        for (var i = 0; i < rewards.Rewards.Count; i++)
+                        
+                        if (!flyOutRewards)
                         {
-                            var reward = rewards.Rewards[i];
-                            RewardFlyAnimation.Spawn(
-                                openedBoxRankRewardsDisplay.chestRewards[i],
-                                reward.amount,
-                                openedBoxRankRewardsDisplay.chestRewards[i].transform,
-                                sourceCanvas,
-                                reward.id,
-                                ScreenAnimations);
-                            await Task.Delay(150);
+                            ScreenAnimations();
+                        }
+                        else
+                        {
+                            for (var i = 0; i < rewards.Rewards.Count; i++)
+                            {
+                                var reward = rewards.Rewards[i];
+                                RewardFlyAnimation.Spawn(
+                                    openedBoxRankRewardsDisplay.chestRewards[i],
+                                    reward.amount,
+                                    openedBoxRankRewardsDisplay.chestRewards[i].transform,
+                                    sourceCanvas,
+                                    reward.id,
+                                    ScreenAnimations);
+                                await Task.Delay(150);
+                            }
                         }
                     }
                 }

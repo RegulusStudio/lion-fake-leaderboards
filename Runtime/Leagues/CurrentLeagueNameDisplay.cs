@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -8,6 +9,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
     {
 
         [SerializeField] private string suffix;
+        [SerializeField] private bool setTextMaterial = true;
+        [SerializeField] private Image textBackground;
 
         private TMP_Text text;
 
@@ -24,8 +27,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             League currentLeague = leaguesManager.leagues[leaguesManager.CurrentLeague];
             text.text = $"{currentLeague.name}{suffix}";
-            text.color = Color.white;
-            text.fontSharedMaterial = currentLeague.nameMaterial;
+            if (setTextMaterial) text.fontSharedMaterial = currentLeague.nameMaterial;
+            if (textBackground != null) textBackground.sprite = currentLeague.nameBackground;
         }
     }
 }

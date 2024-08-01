@@ -59,7 +59,7 @@ Marley
 User8796
 Logan
 User2613
-Şirin
+Sirin
 Mert
 Colossal
 User2371
@@ -76,7 +76,7 @@ Julia
 Vinicius
 Harley
 User2133
-Rıza
+Riza
 User2405
 User2206
 User6463
@@ -151,7 +151,7 @@ Diego
 Gustavo
 User6696
 User8109
-Natália
+Natalia
 Fantastic
 User9566
 Ethereal
@@ -170,7 +170,7 @@ User8658
 Grand
 User1496
 Isabel
-Barış
+Baris
 User6872
 User5638
 User6682
@@ -182,13 +182,13 @@ Antonella
 User5987
 Victor
 Apex
-André
+Andre
 Baran
 User6581
 Isabella
 Arthur
 Berk
-João
+Joao
 Luisa
 Cybernetic
 User4685
@@ -316,7 +316,7 @@ ElUser6696
 DeNatália88
 DeUser24701
 Hal-ChampionA
-HalJoão
+HalJoao
 CyUser129302
 Elijah1
 Al-Fantastic01
@@ -531,7 +531,7 @@ DeFrankie
 HalUser5093Y
 GustavoY
 FiHunterX
-CyBarış
+CyBaris
 Emma
 BenUser846
 GioUser6894
@@ -603,7 +603,7 @@ Ben-IsabelaX
 Avery
 CyMajestic
 Ava
-DeNatália77
+DeNatalia77
 HalUser2886
 Benjamin
 Lucas

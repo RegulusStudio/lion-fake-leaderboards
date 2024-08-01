@@ -57,10 +57,10 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 };
             }
 
-            logs += $"ls: {lastScore.score} ; ";
+            AddToDebugLogs(ref logs,$"ls: {lastScore.score} ; ");
             float progressionRatio = Mathf.Pow(normalizedTime, lastScore.coefficientValue);
 
-            logs += $"cf: {lastScore.coefficientValue} ; ";
+            AddToDebugLogs(ref logs,$"cf: {lastScore.coefficientValue} ; ");
             
             //Use this if want to more difference between bots score but the for most bots the score seems to stop updating towards the end of tournament
             int botNewScore = Mathf.Max(lastScore.score,  Mathf.RoundToInt(Mathf.Lerp(0, botTargetScore, progressionRatio)));
@@ -71,9 +71,18 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 lastScore.normalizedTime = normalizedTime;
                 lastScore.targetScore = botTargetScore;
                 tournamentProgress.playerScores[playerId] = lastScore;
-                tournamentProgress.Save();
             }
             return new ParticipantData(botNewScore, profile, int.MaxValue);
+        }
+        
+        private void AddToDebugLogs(ref string logs, string newLog)
+        {
+            if (!LeagueLogsDisplay.IsDebugModeEnabled)
+            {
+                return;
+            }
+            
+            logs += newLog;
         }
 
         public int GetLastTargetScore(TournamentProgress tournamentProgress)

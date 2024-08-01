@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LionStudios.Suite.Leaderboards.Fake
@@ -12,6 +13,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] private RewardBoxDisplay boxPrefab;
         
         [SerializeField] private bool forceUnboxed;
+        
+        [Tooltip("If not set, will use this transform.")]
+        [SerializeField] private Transform rewardsContainer;
 
         internal List<Image> chestRewards { get; private set; } = new List<Image>();
         
@@ -22,11 +26,12 @@ namespace LionStudios.Suite.Leaderboards.Fake
             gameObject.SetActive(hasRewards);
             if (!hasRewards) 
                 return;
-            transform.DestroyChildrenImmediate();
+            if (rewardsContainer == null) rewardsContainer = transform;
+            rewardsContainer.DestroyChildrenImmediate();
                 
             if (rankRewards.isBoxed && !forceUnboxed) 
             {
-                RewardBoxDisplay instance = Instantiate(boxPrefab, transform);
+                RewardBoxDisplay instance = Instantiate(boxPrefab, rewardsContainer);
                 instance.Init(rankRewards, animateRotatingLights);
                 instance.name = "Reward";
             }
@@ -35,7 +40,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 for (var i = 0; i < rankRewards.Rewards.Count; i++)
                 {
                     LeaderboardReward reward = rankRewards.Rewards[i];
-                    RewardDisplay instance = Instantiate(prefab, transform);
+                    RewardDisplay instance = Instantiate(prefab, rewardsContainer);
                     instance.Init(reward, true);
                     instance.name = "Reward";
                     chestRewards.Add(instance.iconImg);

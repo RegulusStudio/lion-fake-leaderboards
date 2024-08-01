@@ -49,11 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnabled: 1
-  overrideJoin: 0
-  startTime: 01-01-2000 00:00:00
+  startTime: 01/01/2000 00:00:00
   Duration: 60
   promoteCount: 5
-  leaderboardAutoUpdateInterval: 5
   leagues:
   - name: Bronze
     icon: {fileID: 21300000, guid: b600bb911bea94a27bfe28ef637e5cbb, type: 3}
@@ -389,6 +387,8 @@ MonoBehaviour:
       botNamesFile: {fileID: 4900000, guid: 070e2f2d6b89e49b4a8719f96806360c, type: 3}
       numberOfBots: 20
       margin: 20
+  animatePlayerOnly: 1
+  overrideJoin: 0
   offerScreen: {fileID: 2214645285721521344}
   leaderboardScreen: {fileID: 6699630301748685631}
   endScreen: {fileID: 6681610395154399173}

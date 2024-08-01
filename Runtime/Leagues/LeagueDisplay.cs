@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
     public class LeagueDisplay : MonoBehaviour
     {
         [SerializeField] private Image iconImg;
+        [SerializeField] private List<Image> additionalIconImgs;
         [SerializeField] private TMP_Text nameLbl;
         [SerializeField] private bool colorizeIcon = false;
         [SerializeField] private Color currentIconColor = Color.white;
@@ -23,7 +25,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] private GameObject currentExtraGO;
         [SerializeField] private Sprite higherIconSpriteOverride;
         [SerializeField] private RankRewardsDisplay promotionRewardDisplay;
-
+        
         public void Init(League league, int current, int index, bool showPromotionRewardsButton)
         {
             bool isCurrent = index >= 0 && current >= 0 && index == current;
@@ -38,6 +40,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     iconImg.color = normalIconColor;
                     iconImg.sprite = higherIconSpriteOverride;
                 }
+
+                SetNextLeagueIcon(iconImg.sprite);
             }
             if (nameLbl != null)
             {
@@ -83,6 +87,13 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             iconContainer.localScale = Vector3.one * scale;
         }
-        
+
+        private void SetNextLeagueIcon(Sprite nextLeagueIcon)
+        {
+            foreach (var nextIcon in additionalIconImgs)
+            {
+                nextIcon.sprite = nextLeagueIcon;
+            }
+        }
     }
 }

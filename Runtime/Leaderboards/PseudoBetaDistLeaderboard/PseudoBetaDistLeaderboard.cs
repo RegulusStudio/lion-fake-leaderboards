@@ -87,7 +87,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         private string[] LoadAllNames()
         {
-            string[] arrayOfNames = leaderboardData.botNamesFile.text.Split('\n');
+            string[] arrayOfNames = leaderboardData.botNamesFile.text.Split('\n').Where(name => !string.IsNullOrWhiteSpace(name)).ToArray();
             return arrayOfNames;
         }
         
@@ -117,15 +117,14 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public override LeaderboardCalculatedData CalculatedData(DateTime startTime, DateTime endTime, DateTime currentTime, int playerScore)
         {
             logs = "";
-            logs +=
-                $"{_minBotScore}-{_maxBotScore}, {_targetWinRatio}, {leaderboardData.margin}\n";  
+            AddToDebugLogs($"{_minBotScore}-{_maxBotScore}, {_targetWinRatio}, {leaderboardData.margin}\n");  
             bool store = true;
             float normalizedTime = TimeUtils.GetTimeSpentRatio(startTime, endTime, currentTime);
-            logs += $"nt = {normalizedTime} ; ";
+            AddToDebugLogs($"nt = {normalizedTime} ; ");
             int projectedScore = GetProjectedScore(playerScore, normalizedTime);
-            logs += $"ps = {projectedScore} ; ";
+            AddToDebugLogs($"ps = {projectedScore} ; ");
             int targetValue = Mathf.Clamp(projectedScore, _minBotScore + GetCalculatedMargin, _maxBotScore - GetCalculatedMargin);
-            logs += $"tv = {targetValue} ; ";
+            AddToDebugLogs($"tv = {targetValue} ; ");
             List<int> botTargetScores = new List<int>();
             long startTimeUnix = startTime.Round().ToUnixTime();
             if (!scoresStorage.tournamentsProgresses.tournaments.TryGetValue(startTimeUnix, out TournamentProgress tournamentProgress))
@@ -135,7 +134,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     scoresStorage.tournamentsProgresses.tournaments[startTimeUnix] = tournamentProgress;
             }
             
-            logs += $"lt = {tournamentProgress.lastTargetUpdateValue} ; ";
+            AddToDebugLogs($"lt = {tournamentProgress.lastTargetUpdateValue} ; ");
 
             // Update bots by modulo.
             // If the target value goes from 10 to 12, update bots with a mod(targetUpdateModulo) of either
@@ -159,7 +158,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
                 tournamentProgress.lastTargetUpdateValue = projectedScore;
             }
-            logs += $"up = {{ {string.Join(",", botsToUpdate)} }} \n";
+            AddToDebugLogs($"up = {{ {string.Join(",", botsToUpdate)} }} \n");
             
             for (int i = 0; i < _allBots.Length; i++)
             {
@@ -170,19 +169,24 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     botTargetScores.Add(_allBots[i].GetLastTargetScore(tournamentProgress));
             }
             
-                botTargetScores.Sort();
+            botTargetScores.Sort();
             
             List<ParticipantData> participants = new List<ParticipantData>();
             for (var i = 0; i < _allBots.Length; i++)
             {
                 PseudoBetaDistBotData bot = _allBots[i];
-                logs += $"bot{i}: tg: {botTargetScores[i]} ; ";
+                AddToDebugLogs($"bot{i}: tg: {botTargetScores[i]} ; ");
                 ParticipantData pd;
                 pd = bot.GetParticipantData(tournamentProgress, botTargetScores[i], normalizedTime, store, ref logs, _allBots[i].GetProfile());
                 
-                logs += $"cs: {pd.score} ; ";
+                AddToDebugLogs($"cs: {pd.score} ; ");
                 participants.Add(pd);
-                logs += "\n";
+                AddToDebugLogs("\n");
+            }
+            
+            if (store)
+            {
+                tournamentProgress.Save();
             }
 
             ParticipantData player = new ParticipantData(playerScore, leaderboardData.playerProfile, int.MaxValue); 
@@ -190,6 +194,16 @@ namespace LionStudios.Suite.Leaderboards.Fake
             participants = participants.OrderByDescending(p => p.score).ThenByDescending(p => (player.score == 0 ? (p != player) : (p == player))).ToList();
             int playerRank = participants.IndexOf(player);
             return new LeaderboardCalculatedData() { participantDatas = participants, playerIndex = playerRank };
+        }
+
+        private void AddToDebugLogs(string newLog)
+        {
+            if (!LeagueLogsDisplay.IsDebugModeEnabled)
+            {
+                return;
+            }
+            
+            logs += newLog;
         }
         
         private int GetCalculatedMargin => (int) ((_maxBotScore - _minBotScore) * (leaderboardData.margin / 100f));

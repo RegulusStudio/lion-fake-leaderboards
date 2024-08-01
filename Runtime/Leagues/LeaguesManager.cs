@@ -6,6 +6,7 @@ using LionStudios.Suite.Analytics;
 using LionStudios.Suite.Analytics.Events;
 using UnityEngine;
 using LionStudios.Suite.Core;
+using UnityEngine.Serialization;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -19,6 +20,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public Sprite altIcon;
         public Material nameMaterial;
         public Color color = Color.white;
+        public Sprite nameBackground;
         public RankRewards promotionRewards;
         public List<RankRewards> rewards;
         public int minBotScore = 10;
@@ -58,9 +60,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public string id => Leaderboard. GetLeaderboardData().leaderboardId;
 
         public bool isEnabled = true;
-        public bool animatePlayerOnly = false;
-        public bool overrideJoin = false;
-        [SerializeField]
+        [SerializeField][DateTimePicker]
         public string startTime;
 
         private bool hasLoggedParseError = false;
@@ -119,6 +119,15 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         [SerializeField] internal PseudoBetaDistLeaderboard Leaderboard;
         
+        public bool animatePlayerOnly = true;
+        public bool overrideJoin = false;
+        [Min(0.05f)]
+        public float perRankTime = 0.15f;
+        [Min(1f)]
+        public float maxPlayerAnimationTime = 3;
+        [Range(0.05f, 1f)] //Should be like this (minimum of perRankTime, minimum of maxPlayerAnimationTime)
+        public float minPlayerAnimationTime = 1f;
+
         [Header("Prefab References (Do not change)")]
         [SerializeField] private LeagueOfferScreen offerScreen;
         [SerializeField] private LeagueLeaderboardScreen leaderboardScreen;

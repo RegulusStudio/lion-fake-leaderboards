@@ -14,7 +14,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         public void Init(List<League> leagues,bool joinOverride, Action onContinue)
         {
-            leaguesDisplay.Init(leagues, -1);
+            if (leaguesDisplay != null) leaguesDisplay.Init(leagues, -1);
             continueBtn.onClick.RemoveAllListeners();
             if (!joinOverride)
             {
@@ -27,7 +27,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             base.Show();
 
-            leaguesDisplay.Show();
+            if (leaguesDisplay != null) leaguesDisplay.Show();
         }
 
     }

@@ -17,6 +17,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         [SerializeField] private Sprite playerBgSprite;
         [SerializeField] private Color playerLblColor = new Color(0.8f, 0.7f, 0f);
+        [SerializeField] private bool updateRankLabelColor = true;
 
         [SerializeField] private RankRewardsDisplay rewardsDisplay;
 
@@ -28,10 +29,15 @@ namespace LionStudios.Suite.Leaderboards.Fake
         private Canvas _parentCanvas;
 
         internal int _rank;
+        internal ParticipantData _participantData;
         internal bool _isPlayer;
+
+        public Transform ThisTransform { private set; get; }
         
         public void Init(int rank, ParticipantData participantData, bool isPlayer)
         {
+            ThisTransform = this.transform;
+            
             if (_parentCanvas == null)
             {
                 _parentCanvas = transform.parent.GetComponentInParent<Canvas>();
@@ -60,6 +66,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public void UpdateData(int rank, ParticipantData participantData, bool isPlayer)
         {
             _rank = rank;
+            _participantData = participantData;
 
             if (isPlayer)
             {
@@ -67,7 +74,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 
                 if (playerBgSprite != null)
                     backgroundImg.sprite = playerBgSprite;
-                if (rankLbl != null)
+                if (rankLbl != null && updateRankLabelColor)
                     rankLbl.color = playerLblColor;
                 nameLbl.color = playerLblColor;
             }
@@ -129,6 +136,21 @@ namespace LionStudios.Suite.Leaderboards.Fake
             {
                 Destroy(canvas);
             }
+        }
+
+        internal void LowerRankByOne()
+        {
+            UpdateData(_rank - 1, _participantData, _isPlayer);
+        }
+        
+        internal void UpRankByOne()
+        {
+            UpdateData(_rank + 1, _participantData, _isPlayer);
+        }
+
+        internal void CustomRank(int rank)
+        {
+            UpdateData(rank, _participantData, _isPlayer);
         }
         
     }

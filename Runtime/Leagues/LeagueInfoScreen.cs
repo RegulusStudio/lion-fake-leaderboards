@@ -18,9 +18,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 customCollectionTxt = LeaguesManager.CustomInfoCollectionTxt?.Invoke(true);
             }
 
-            step01Lbl.text = $"Collect <color=\"yellow\"> {customCollectionTxt} </color> to progress in the League";
-            step02Lbl.text = $"Reach to the top to earn <color=\"yellow\">Epic Prizes!</color>";
-            step03Lbl.text = $"Finish in the <color=\"yellow\"> Top  {LeaguesManager.Instance.promoteCount} </color> to be <color=\"green\">promoted</color>  to the next League!";
+            if (step01Lbl != null) step01Lbl.text = $"Collect <color=\"yellow\"> {customCollectionTxt} </color> to progress in the League";
+            if (step02Lbl != null) step02Lbl.text = $"Reach to the top to earn <color=\"yellow\">Epic Prizes!</color>";
+            if (step03Lbl != null) step03Lbl.text = $"Finish in the <color=\"yellow\"> Top  {LeaguesManager.Instance.promoteCount} </color> to be <color=\"green\">promoted</color>  to the next League!";
         }
 
         public void Show()
