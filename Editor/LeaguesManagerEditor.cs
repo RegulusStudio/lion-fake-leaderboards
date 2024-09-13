@@ -14,11 +14,7 @@ public class LeagueManagerEditor : Editor
         "animatePlayerOnly",
         "perRankTime",
         "maxPlayerAnimationTime",
-        "minPlayerAnimationTime",
-        "offerScreen",
-        "leaderboardScreen",
-        "endScreen",
-        "infoScreen",
+        "minPlayerAnimationTime"
     };
 
     public override void OnInspectorGUI()
@@ -38,10 +34,6 @@ public class LeagueManagerEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("perRankTime"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("maxPlayerAnimationTime"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("minPlayerAnimationTime"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("offerScreen"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("leaderboardScreen"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("endScreen"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("infoScreen"));
         }
 
         serializedObject.ApplyModifiedProperties();

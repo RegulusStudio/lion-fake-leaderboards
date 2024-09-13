@@ -35,52 +35,55 @@ namespace LionStudios.Suite.Leaderboards.Fake
         private bool ChestOpened;
         internal int rank;
 
-        public void Init(LeaguesManager manager, LeaderboardCalculatedData scores, int promoteCount)
+        public void Show(LeaderboardCalculatedData scores)
+        // Init(LeaguesManager manager,LeaguesUIManager uiManager, LeaderboardCalculatedData scores, int promoteCount)
         {
+            base.Show();
+            int promoteCount = leaguesManager.promoteCount;
             sourceCanvas = transform.GetComponent<Canvas>();
             rank = scores.GetPlayerIndex();
-            bool hasPromotionZone = manager.CurrentLeague < manager.leagues.Count - 1;
-            bool hasDemotionZone = manager.CurrentLeague > 0;
+            bool hasPromotionZone = leaguesManager.CurrentLeague < leaguesManager.leagues.Count - 1;
+            bool hasDemotionZone = leaguesManager.CurrentLeague > 0;
 
-            League completedLeague = manager.leagues[manager.CurrentLeague];
+            League completedLeague = leaguesManager.leagues[leaguesManager.CurrentLeague];
             leagueDisplay.Init(completedLeague, -1, -1, false);
 
-            RankRewards rewards = manager.GetRankAndPromotionRewards(rank);
+            RankRewards rewards = leaguesManager.GetRankAndPromotionRewards(rank);
 
             rankRewardsDisplay.Init(rewards, true);
             openedBoxRankRewardsDisplay.Init(rewards, false);
 
             if (hasPromotionZone && rank < promoteCount)
             {
-                manager.LeagueUp();
+                leaguesManager.LeagueUp();
                 recapTitleLbl.text = $"You finished {rank+1}{StatUtils.OrdinalSuffix(rank+1)}! ";
-                recapMessageLbl.text = $"Congratulations! You're promoted to the {manager.leagues[manager.CurrentLeague].name} league!";
-                LeaguesAnalytics.FireLeagueEndEvents(LeaguesAnalytics.MissionType.Completed, manager, scores);
+                recapMessageLbl.text = $"Congratulations! You're promoted to the {leaguesManager.leagues[leaguesManager.CurrentLeague].name} league!";
+                LeaguesAnalytics.FireLeagueEndEvents(LeaguesAnalytics.MissionType.Completed, leaguesManager, scores);
             }
             else if (hasDemotionZone && rank >= scores.participantDatas.Count - promoteCount)
             {
-                manager.LeagueDown();
+                leaguesManager.LeagueDown();
                 recapTitleLbl.text = $"You finished {rank+1}{StatUtils.OrdinalSuffix(rank+1)}! ";
-                recapMessageLbl.text = $"Sorry! You're demoted to the {manager.leagues[manager.CurrentLeague].name} league. \n Don't let this pull you down!";
-                LeaguesAnalytics.FireLeagueEndEvents(LeaguesAnalytics.MissionType.Failed, manager, scores);
+                recapMessageLbl.text = $"Sorry! You're demoted to the {leaguesManager.leagues[leaguesManager.CurrentLeague].name} league. \n Don't let this pull you down!";
+                LeaguesAnalytics.FireLeagueEndEvents(LeaguesAnalytics.MissionType.Failed, leaguesManager, scores);
             }
             else
             {
-                if ((manager.CurrentLeague + 1) == manager.leagues.Count)
+                if ((leaguesManager.CurrentLeague + 1) == leaguesManager.leagues.Count)
                 {
                     recapTitleLbl.text = $"You finished {rank + 1}{StatUtils.OrdinalSuffix(rank + 1)}! ";
-                    recapMessageLbl.text = $"You stayed in the {manager.leagues[manager.CurrentLeague].name} league! Keep up the work, champion!";
+                    recapMessageLbl.text = $"You stayed in the {leaguesManager.leagues[leaguesManager.CurrentLeague].name} league! Keep up the work, champion!";
                 }
                 else
                 {
                     recapTitleLbl.text = $"You finished {rank + 1}{StatUtils.OrdinalSuffix(rank + 1)}! ";
-                    recapMessageLbl.text = $"You stayed in the {manager.leagues[manager.CurrentLeague].name} league! \n Better luck next time!";
+                    recapMessageLbl.text = $"You stayed in the {leaguesManager.leagues[leaguesManager.CurrentLeague].name} league! \n Better luck next time!";
                 }
 
-                LeaguesAnalytics.FireLeagueEndEvents(LeaguesAnalytics.MissionType.Abandoned, manager, scores);
+                LeaguesAnalytics.FireLeagueEndEvents(LeaguesAnalytics.MissionType.Abandoned, leaguesManager, scores);
             }
             
-            manager.UpdateLeaderboardData();
+            leaguesManager.UpdateLeaderboardData();
 
             if (rewards != null && rewards.isBoxed)
             {
@@ -94,7 +97,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
             if (rewards != null)
             {
-                manager.ClaimRewards(rewards.Rewards);
+                leaguesManager.ClaimRewards(rewards.Rewards);
             }
 
             continueBtn.onClick.RemoveAllListeners();
@@ -104,8 +107,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
             {
                 if (!openedParentChestObject.gameObject.activeInHierarchy)
                 {
-                    manager.ResetLeaderboard();
-                    manager.Show();
+                    uiManager.ResetLeaderboard();
+                    uiManager.ShowLeagueUI();
                 }
                 else
                 {
@@ -138,8 +141,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 {
                     ChangeBgScreenStatus(false);
                     await Task.Delay(TimeSpan.FromSeconds(2f));
-                    manager.ResetLeaderboard();
-                    manager.Show();
+                    uiManager.ResetLeaderboard();
+                    uiManager.ShowLeagueUI();
                     Debug.Log("RWD Should Add!");
                     ChestOpened = false;
                     ChangeBgScreenStatus(true);
@@ -171,7 +174,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                             continueLbl.text = "CLAIM";
                             openedBoxRankRewardsDisplay.Init(rewards, false);
 
-                            RankRewards updatedRewardObject = manager.GetRankAndPromotionRewards(rank);
+                            RankRewards updatedRewardObject = leaguesManager.GetRankAndPromotionRewards(rank);
                             var cachedBoxSprite = updatedRewardObject.boxSprite;
                             updatedRewardObject.boxSprite = updatedRewardObject.openedBoxSprite;
                             rankRewardsDisplay.Init(rewards, false);
@@ -181,8 +184,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
                         }
                     }
                 }
-                manager.ResetLeaderboard();
-                manager.Show();
+                uiManager.ResetLeaderboard();
+                uiManager.ShowLeagueUI();
             });
 
         }

@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading.Tasks;
 using LionStudios.Suite.Analytics;
 using LionStudios.Suite.Analytics.Events;
 using UnityEngine;
 using LionStudios.Suite.Core;
-using UnityEngine.Serialization;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -19,7 +17,6 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public Sprite icon;
         public Sprite altIcon;
         public Material nameMaterial;
-        public Color color = Color.white;
         public Sprite nameBackground;
         public RankRewards promotionRewards;
         public List<RankRewards> rewards;
@@ -55,8 +52,6 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         private const string LEAGUE_REMOTE_CONFIG_KEY = "LS_LeaguesConfig";
         
-        private const float MINIMUM_AUTO_UPDATE_INTERVAL_VALUE = 1f;
-
         public string id => Leaderboard. GetLeaderboardData().leaderboardId;
 
         public bool isEnabled = true;
@@ -128,15 +123,12 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [Range(0.05f, 1f)] //Should be like this (minimum of perRankTime, minimum of maxPlayerAnimationTime)
         public float minPlayerAnimationTime = 1f;
 
-        [Header("Prefab References (Do not change)")]
-        [SerializeField] private LeagueOfferScreen offerScreen;
-        [SerializeField] private LeagueLeaderboardScreen leaderboardScreen;
-        [SerializeField] private LeagueEndScreen endScreen;
-        [SerializeField] private LeagueInfoScreen infoScreen;
+        [Header("Prefab References (Do not change)")] 
+        [SerializeField] private LeaguesUIManager defaultUIManager;
 
         internal bool IsInitialized { private set; get; }
 
-        public Action<LeaguesManager> OnLeagueInitialized;
+        public Action OnLeagueInitialized;
 
         internal event Action OnConfigOverridden;
 
@@ -157,7 +149,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public bool HasJoined
         {
             get => LionStorage.GetInt($"{HAS_JOINED_KEY}_{id}") > 0;
-            private set => LionStorage.SetInt($"{HAS_JOINED_KEY}_{id}", value ? 1 : 0);
+            set => LionStorage.SetInt($"{HAS_JOINED_KEY}_{id}", value ? 1 : 0);
         }
 
         public int CurrentLeague
@@ -192,13 +184,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             return Leaderboard.GetInitialScores();
         }
-
-        public LeaderboardCalculatedData GetCurrentScoresNoRecalculation()
-        {
-            //TODO
-            DateTime startTime = LastStartTime;
-            return Leaderboard.CalculatedData(LastStartTime, NextEndTime, Leaderboard.scoresStorage.GetStoredPlayerScore(LastStartTime)?.score ?? 0);
-        }
+        
+        public int PlayerScore => Leaderboard.scoresStorage.GetStoredPlayerScore(LastStartTime)?.score ?? 0;
 
         public RankRewards GetRankAndPromotionRewards(int rank)
         {
@@ -226,7 +213,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             return result;
         }
 
-        private LeaderboardCalculatedData GetPastScores(TournamentProgress pastScores)
+        public LeaderboardCalculatedData GetPastScores(TournamentProgress pastScores)
         {
             DateTime startTime = Leaderboard.scoresStorage.GetStartTime(pastScores);
             return Leaderboard.CalculatedData(
@@ -239,6 +226,15 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             var storedScores = Leaderboard.scoresStorage.GetLastOutdatedScores(LastStartTime);
             return GetPastScores(storedScores);
+        }
+
+        private void Awake()
+        {
+            if (Instance != this)
+            {
+                Destroy(gameObject);
+            }
+            DontDestroyOnLoad(gameObject);
         }
 
         private async void Start()
@@ -261,14 +257,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     LeaguesAnalytics.FireLeagueSessionEvent(Instance);
                 }
             }
-            leaderboardScreen.Init(this);
-            offerScreen.Init(leagues,overrideJoin, () =>
-            {
-                HasJoined = true;
-                LeaguesAnalytics.FireLeagueJoinedEvent(leagues, leagues[CurrentLeague].name, CurrentLeague.ToString());
-                Show();
-            });
-            OnLeagueInitialized?.Invoke(this);
+            
+            OnLeagueInitialized?.Invoke();
             IsInitialized = true;
         }
 
@@ -276,6 +266,13 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public void OverrideConfig(LeagueRemoteConfig leagueRemoteConfig)
         {
             this.isEnabled = leagueRemoteConfig.IsEnabled;
+            
+            if (!leagueRemoteConfig.IsEnabled)
+            {
+                OnConfigOverridden?.Invoke();
+                return;
+            }
+            
             this.Duration = leagueRemoteConfig.Duration;
             this.promoteCount = leagueRemoteConfig.PromoteCount;
             this.Leaderboard.GetLeaderboardData().numberOfBots = leagueRemoteConfig.NumberOfBots;
@@ -337,48 +334,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         public void Show()
         {
-            if (!isEnabled)
-            {
-                Debug.Log("League is disabled! Not showing");
-                return;
-            }
-
-            if (!HasJoined)
-            {
-                offerScreen.Show();
-                leaderboardScreen.Hide();
-                endScreen.Hide();
-                return;
-            }
-
-            TournamentProgress storedScores = Leaderboard.scoresStorage.GetLastOutdatedScores(LastStartTime);
-            
-            if (storedScores != null)
-            {
-                var scores = GetPastScores(storedScores);
-                Leaderboard.scoresStorage.ClearPastScores(LastStartTime);
-                endScreen.Init(this, scores, promoteCount);
-                endScreen.Show();
-                offerScreen.Hide();
-                leaderboardScreen.Hide();
-            }
-            else
-            {
-                offerScreen.Hide();
-                endScreen.Hide();
-                leaderboardScreen.Show();
-
-                LeaguesAnalytics.FireLeagueCheckEvent(Instance.leagues, Instance.CurrentLeague, Instance.GetCurrentScores(), promoteCount);
-            }
+           defaultUIManager.ShowLeagueUI();
         }
-
-        public void Hide()
-        {
-            offerScreen.Hide();
-            leaderboardScreen.Hide();
-            endScreen.Hide();
-        }
-
+        
         internal void ClaimRewards(List<LeaderboardReward> rewards)
         {
             foreach (LeaderboardReward reward in rewards)
@@ -386,12 +344,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 LionGameInterfaces.Transactions.Earn(reward);
             }
         }
-
-        public void ResetLeaderboard()
-        {
-            leaderboardScreen.InitLeaderboard();
-        }
-
+        
         public void Score(int amount)
         {
             if (!isEnabled)
@@ -408,13 +361,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             
             Leaderboard.scoresStorage.IncrementPlayerScore(amount, Leaderboard.GetLeaderboardData().playerProfile, LastStartTime, NextEndTime);
         }
-        public void ManualJoinLeague()
-        {
-            offerScreen.Hide();
-            HasJoined = true;
-            LeaguesAnalytics.FireLeagueJoinedEvent(leagues, leagues[CurrentLeague].name, CurrentLeague.ToString());
-            Show();
-        }
+       
         internal void LeagueUp()
         {
             CurrentLeague = Mathf.Min(CurrentLeague + 1, leagues.Count);

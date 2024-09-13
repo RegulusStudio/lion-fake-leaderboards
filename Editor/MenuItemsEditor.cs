@@ -10,8 +10,10 @@ namespace LionStudios.Suite.Leaderboards.Fake.Editor
         
         private const string LEAGUES_MANAGER_NAME = "Leagues Manager";
         private const string LEAGUES_BUTTON_NAME = "Leagues Button";
+        
+        private const int STARTING_PRIORITY_NUMBER = 20;
 
-        [MenuItem(LION_STUDIO_GAME_OBJECT_MENU_PATH + LEAGUES_MANAGER_NAME, false, priority = 0)]
+        [MenuItem(LION_STUDIO_GAME_OBJECT_MENU_PATH + LEAGUES_MANAGER_NAME, false, priority = STARTING_PRIORITY_NUMBER)]
         private static void CreateLeaguesManager(MenuCommand menuCommand)
         {
             
@@ -19,7 +21,7 @@ namespace LionStudios.Suite.Leaderboards.Fake.Editor
             GameObject parent = menuCommand.context as GameObject;
             Spawn(itemToSpawn, parent);
         }
-        [MenuItem(LION_STUDIO_GAME_OBJECT_MENU_PATH + LEAGUES_BUTTON_NAME, false, priority = 0)]
+        [MenuItem(LION_STUDIO_GAME_OBJECT_MENU_PATH + LEAGUES_BUTTON_NAME, false, priority = STARTING_PRIORITY_NUMBER + 1)]
         private static void CreateLeaguesButton(MenuCommand menuCommand)
         {
             

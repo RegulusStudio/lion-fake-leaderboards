@@ -104,6 +104,15 @@ namespace LionStudios.Suite.Leaderboards.Fake
             if (iconImg != null)
                 iconImg.sprite = participantData.icon;
             nameLbl.text = participantData.name;
+
+            if (isPlayer)
+            {
+                if (!string.IsNullOrEmpty(LeagueUsernamePopupScreen.LeaguesUsername))
+                {
+                    nameLbl.text = LeagueUsernamePopupScreen.LeaguesUsername;
+                }
+            }
+            
             scoreLbl.text = participantData.score.ToString();
             
             if (rewardsDisplay != null)

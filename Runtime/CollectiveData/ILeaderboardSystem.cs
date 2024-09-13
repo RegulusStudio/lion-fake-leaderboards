@@ -15,5 +15,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         string RemainingTimeString { get; }
 
+        int PlayerScore { get; }
+
     }
 }

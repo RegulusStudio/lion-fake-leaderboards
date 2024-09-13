@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +14,6 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] public RankRewardsDisplay rewardsPopup;
         [SerializeField] private CurrentLeagueNameDisplay leagueName;
         
-        private LeaguesManager leaguesManager;
         private bool isInitializing;
 
         public enum Zone
@@ -26,18 +23,13 @@ namespace LionStudios.Suite.Leaderboards.Fake
             demotion
         }
 
-        public void Init(LeaguesManager league)
+        public override void Init(LeaguesUIManager uiManager)
         {
-            leaguesManager = league;
+            base.Init(uiManager);
             leaguesIconsDisplay.Init(leaguesManager.leagues, leaguesManager.CurrentLeague);
             leagueName.Init(leaguesManager);
             InitLeaderboard();
-        }
-        
-        private void Awake()
-        {
-            leaguesManager = GetComponentInParent<LeaguesManager>();
-            continueBtn.onClick.AddListener(leaguesManager.Show);
+            continueBtn.onClick.AddListener(uiManager.ShowLeagueUI);
         }
         
         private void OnEnable()
@@ -47,6 +39,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 UpdateData(true, true);
                 entriesDisplay.FocusOnPlayer();
                 leaguesIconsDisplay.Init(leaguesManager.leagues, leaguesManager.CurrentLeague);
+                leagueName.Init(leaguesManager);
             }
         }
 

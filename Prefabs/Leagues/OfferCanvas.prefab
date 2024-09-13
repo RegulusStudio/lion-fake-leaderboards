@@ -66,8 +66,9 @@ GameObject:
   - component: {fileID: 7763877581768977301}
   - component: {fileID: 8457574823503749495}
   - component: {fileID: 7039011892070867950}
+  - component: {fileID: 7722499388760733587}
   m_Layer: 0
-  m_Name: Button
+  m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,20 +175,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8457574823503749495}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LionStudios.Suite.Leaderboards.Fake.LeaguesManager,
-          LionStudios.Suite.Leaderboards.Fake.Runtime
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &7722499388760733587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089671874958601023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123d8498a530b4a3ba6b37f9867c6379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1368442524675663088
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +304,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   continueBtn: {fileID: 2130613619447438600}
+  bgCloseBtn: {fileID: 1625956559144740838}
+  safeAreaCloseBtn: {fileID: 7039011892070867950}
   leaguesDisplay: {fileID: 2371952667133018533}
 --- !u!1 &1585004293015993683
 GameObject:
@@ -707,6 +709,7 @@ GameObject:
   - component: {fileID: 1625956559144740838}
   - component: {fileID: 3130418827363559170}
   - component: {fileID: 9069214033454702878}
+  - component: {fileID: 9023006740878248584}
   m_Layer: 0
   m_Name: Close
   m_TagString: Untagged
@@ -777,20 +780,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6486023394529003458}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LionStudios.Suite.Leaderboards.Fake.LeaguesManager,
-          LionStudios.Suite.Leaderboards.Fake.Runtime
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &3130418827363559170
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -829,6 +819,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9023006740878248584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3205214228989407436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123d8498a530b4a3ba6b37f9867c6379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4079349184404894311
 GameObject:
   m_ObjectHideFlags: 0

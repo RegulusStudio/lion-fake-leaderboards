@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -19,9 +17,10 @@ namespace LionStudios.Suite.Leaderboards.Fake
         private async void Awake()
         {
             await Task.Delay(InitialDelay);
+            leaguesManager = LeaguesManager.Instance;
             if (LeaguesManager.Instance.IsInitialized)
             {
-                Init(LeaguesManager.Instance);
+                Init();
             }
             else
             {
@@ -49,9 +48,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
             }
         }
 
-        private void Init(LeaguesManager league)
+        private void Init()
         {
-            leaguesManager = league ?? throw new ArgumentNullException(nameof(league));
             InitLeaderboard();
         }
 
