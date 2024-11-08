@@ -8,8 +8,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
     public class LeagueDisplay : MonoBehaviour
     {
         [SerializeField] private Image iconImg;
+        [SerializeField] private Image leagueIconBgImg;
         [SerializeField] private List<Image> additionalIconImgs;
-        [SerializeField] private TMP_Text nameLbl;
         [SerializeField] private bool colorizeIcon = false;
         [SerializeField] private Color currentIconColor = Color.white;
         [SerializeField] private Color normalIconColor = Color.white;
@@ -19,9 +19,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] private Sprite currentBackgroundSprite;
         [SerializeField] private Sprite normalBackgroundSprite;
         [SerializeField] private RectTransform iconContainer;
-        [SerializeField] private bool useAltIcon;
         [SerializeField] private string suffix;
-        [SerializeField] private bool capitalizeName;
         [SerializeField] private GameObject currentExtraGO;
         [SerializeField] private Sprite higherIconSpriteOverride;
         [SerializeField] private RankRewardsDisplay promotionRewardDisplay;
@@ -32,7 +30,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             bool isHigher = index >= 0 && current >= 0 && index > current;
             if (iconImg != null)
             {
-                iconImg.sprite = useAltIcon ? league.altIcon : league.icon;
+                iconImg.sprite = league.icon;
                 if (colorizeIcon)
                     iconImg.color = isCurrent ? currentIconColor : normalIconColor;
                 if (higherIconSpriteOverride != null && isHigher)
@@ -43,15 +41,12 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
                 SetNextLeagueIcon(iconImg.sprite);
             }
-            if (nameLbl != null)
+
+            if (leagueIconBgImg != null)
             {
-                nameLbl.text = $"{league.name}{suffix}";
-                nameLbl.color = Color.white;
-                nameLbl.fontSharedMaterial = league.nameMaterial;
-                
-                if (capitalizeName)
-                    nameLbl.text = nameLbl.text.ToUpperInvariant();
+                leagueIconBgImg.sprite = league.endScreenLeagueBg;
             }
+            
             GetComponent<RectTransform>().sizeDelta *= (isCurrent ? currentLeagueScale : normalScale);
             if (currentExtraGO != null)
                 currentExtraGO.SetActive(isCurrent);

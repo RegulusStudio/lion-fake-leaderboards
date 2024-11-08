@@ -55,11 +55,13 @@ MonoBehaviour:
   Duration: 60
   promoteCount: 5
   leagues:
-  - name: Bronze
-    icon: {fileID: 21300000, guid: b600bb911bea94a27bfe28ef637e5cbb, type: 3}
-    altIcon: {fileID: 21300000, guid: d5bc0009d155c415ba7d3c954716d144, type: 3}
+  - name: BRONZE
+    icon: {fileID: 21300000, guid: d5bc0009d155c415ba7d3c954716d144, type: 3}
     nameMaterial: {fileID: 2100000, guid: 7e74cc7d828b7457c85b9992fb4b24f7, type: 2}
-    nameBackground: {fileID: 0}
+    nameBackground: {fileID: -6898114151267748971, guid: 3ff9328cd209e42399b6fd4078cbfa4f,
+      type: 3}
+    endScreenLeagueBg: {fileID: 3327690384895710540, guid: 2997aa078c5274220ade6467d5c09fa3,
+      type: 3}
     promotionRewards:
       isBoxed: 0
       boxSprite: {fileID: 0}
@@ -109,11 +111,13 @@ MonoBehaviour:
     minBotScore: 0
     maxBotScore: 100
     targetWinRatio: 0.9
-  - name: Silver
-    icon: {fileID: 21300000, guid: 67b92c45dd7944d62adfdc5cd9d8da60, type: 3}
-    altIcon: {fileID: 21300000, guid: 0c66d19b1f82c46469c426079424fb2c, type: 3}
+  - name: SILVER
+    icon: {fileID: 21300000, guid: 0c66d19b1f82c46469c426079424fb2c, type: 3}
     nameMaterial: {fileID: 2100000, guid: 579bf752989fe499989771d49eee3d77, type: 2}
-    nameBackground: {fileID: 0}
+    nameBackground: {fileID: -6898114151267748971, guid: b57efa2fc23434ef895d28043a9c356c,
+      type: 3}
+    endScreenLeagueBg: {fileID: 3327690384895710540, guid: db24dae2a5fb9472489f65336e69b30e,
+      type: 3}
     promotionRewards:
       isBoxed: 0
       boxSprite: {fileID: 0}
@@ -163,11 +167,13 @@ MonoBehaviour:
     minBotScore: 10
     maxBotScore: 100
     targetWinRatio: 0.9
-  - name: Gold
-    icon: {fileID: 21300000, guid: 71ee2586a0d29404196de57fd5e7f8e5, type: 3}
-    altIcon: {fileID: 21300000, guid: bc2a543a438f44a20a694c4b05fa64b4, type: 3}
+  - name: GOLD
+    icon: {fileID: 21300000, guid: bc2a543a438f44a20a694c4b05fa64b4, type: 3}
     nameMaterial: {fileID: 2100000, guid: 9c3a9d094d03f46219e1056b601c9d88, type: 2}
-    nameBackground: {fileID: 0}
+    nameBackground: {fileID: -6898114151267748971, guid: cb420f7d7263b4f18ab8a472744fdb6c,
+      type: 3}
+    endScreenLeagueBg: {fileID: 3327690384895710540, guid: e426a5c30fe414840bebd412b9f65a25,
+      type: 3}
     promotionRewards:
       isBoxed: 0
       boxSprite: {fileID: 0}
@@ -217,11 +223,13 @@ MonoBehaviour:
     minBotScore: 15
     maxBotScore: 100
     targetWinRatio: 0.9
-  - name: Platinum
-    icon: {fileID: 21300000, guid: 916da2b9615a14da08cd011e61b56fd9, type: 3}
-    altIcon: {fileID: 21300000, guid: c35c1ca66be704ab58096285225ba6c6, type: 3}
+  - name: PLATINUM
+    icon: {fileID: 21300000, guid: c35c1ca66be704ab58096285225ba6c6, type: 3}
     nameMaterial: {fileID: 2100000, guid: d15d16f3c2bfc40bbb507a07ddad754a, type: 2}
-    nameBackground: {fileID: 0}
+    nameBackground: {fileID: -6898114151267748971, guid: 1e6f00273af314e50bae1a95aad196fb,
+      type: 3}
+    endScreenLeagueBg: {fileID: 3327690384895710540, guid: 5d3cd269a61394779ad410d30c7838dd,
+      type: 3}
     promotionRewards:
       isBoxed: 0
       boxSprite: {fileID: 0}
@@ -271,11 +279,13 @@ MonoBehaviour:
     minBotScore: 0
     maxBotScore: 100
     targetWinRatio: 0.9
-  - name: Ruby
-    icon: {fileID: 21300000, guid: f71c54b6e66ec48b3926f6aa15384b37, type: 3}
-    altIcon: {fileID: 21300000, guid: c5deb0fb2dfbe47d891243529578538a, type: 3}
+  - name: RUBY
+    icon: {fileID: 21300000, guid: c5deb0fb2dfbe47d891243529578538a, type: 3}
     nameMaterial: {fileID: 2100000, guid: 0fdbd6af949784255ac1172385b0a266, type: 2}
-    nameBackground: {fileID: 0}
+    nameBackground: {fileID: -6898114151267748971, guid: f01dd99488ba6495f88b1c929ff1f4ae,
+      type: 3}
+    endScreenLeagueBg: {fileID: 3327690384895710540, guid: 6a35d40d97c384a13866c6b235db5392,
+      type: 3}
     promotionRewards:
       isBoxed: 0
       boxSprite: {fileID: 0}
@@ -325,11 +335,13 @@ MonoBehaviour:
     minBotScore: 0
     maxBotScore: 100
     targetWinRatio: 0.9
-  - name: Legend
-    icon: {fileID: 21300000, guid: 6b553fbafece94de8b5070f420082821, type: 3}
-    altIcon: {fileID: 21300000, guid: 036681e0b9d474167a9d7036670e81e8, type: 3}
+  - name: LEGEND
+    icon: {fileID: 21300000, guid: 036681e0b9d474167a9d7036670e81e8, type: 3}
     nameMaterial: {fileID: 2100000, guid: 624e3726582fd4768b99c3ed174c3538, type: 2}
-    nameBackground: {fileID: 0}
+    nameBackground: {fileID: -6898114151267748971, guid: b656860fce2c6492caf9929e822afac4,
+      type: 3}
+    endScreenLeagueBg: {fileID: 3327690384895710540, guid: 2a2cefc8b2af54a0489369ea4bd288f8,
+      type: 3}
     promotionRewards:
       isBoxed: 0
       boxSprite: {fileID: 0}

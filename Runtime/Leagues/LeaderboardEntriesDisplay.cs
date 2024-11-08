@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using LionStudios.Suite.Core.LeanTween;
 using UnityEngine;
@@ -42,7 +43,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         private RectTransform playerRectTransform;
         private RectTransform bottomPlayerRectTransform;
         private RectTransform viewport;
-        
+
         private const float RANK_SCALING_ANIMATION = 0.2f;
         private const float ONE_RANK_OFFSET_VALUE_PERCENTAGE = 0.05f;
 
@@ -50,6 +51,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
         private float _perRankTime = 0.15f;
         private float _maxPlayerAnimationTime = 3f;
         private float _minPlayerAnimationTime = 0.5f;
+        
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         private class EntryData<T>
         {
@@ -130,9 +133,12 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
             _isDataAlreadyUpdating = true;
             
+            //Reset Data
             LeanTween.cancelAll(true);
             scrollRanksPreviousSyncedPositions.Clear();
             topRanksPreviousSyncedPositions.Clear();
+            ToggleLayoutActivation(true);
+            Canvas.ForceUpdateCanvases();
             
             if (bottomPlayerRectTransform != null)
             {
@@ -291,7 +297,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
                             ((float)Screen.width / Screen.height) * ONE_RANK_OFFSET_VALUE_PERCENTAGE;
 
                         entryDisplay.CustomRank(previousPlayerRank);
-                        var movedSiblingsRealPosition = MoveAllUpperSiblingNpcsOnePositionUp(numberOfPlayerRankChanged, previousPlayerRank);
+                    
+                        Dictionary<LeaderboardEntryDisplay, Vector3> movedSiblingsRealPosition = new Dictionary<LeaderboardEntryDisplay, Vector3>();
+                        movedSiblingsRealPosition = MoveAllUpperSiblingNpcsOnePositionUp(numberOfPlayerRankChanged, previousPlayerRank);
                         _siblingMovementIndex = 0;
                         
                         playerEntry.localPosition = previousPosition;
@@ -348,8 +356,15 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 ToggleLayoutActivation(true);
             }
 
-            await Task.Delay((int)(RANK_SCALING_ANIMATION * 2 * 1000f + extraRankChangeDelayTime * 1000f + eachRankTimeAfterCalculation * 1000f));
-
+            try
+            {
+                await Task.Delay((int)(RANK_SCALING_ANIMATION * 2 * 1000f + extraRankChangeDelayTime * 1000f + eachRankTimeAfterCalculation * 1000f), _cancellationTokenSource.Token);
+            }
+            catch(TaskCanceledException)
+            {
+                return;
+            }
+            
             ToggleLayoutActivation(true);
             CreateBottomPlayerEntry(entryPlayerDis.transform);
 
@@ -388,7 +403,6 @@ namespace LionStudios.Suite.Leaderboards.Fake
                             () =>
                             {
                                 entryDisplay.ResetSortingOrder();
-                                CreateBottomPlayerEntry(entryDisplay.transform);
                                 kvp.Key.gameObject.transform.localPosition = targetNewPosition;
                             });
                 }
@@ -403,7 +417,16 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 }
             }
 
-            await Task.Delay(1100);
+            try
+            {
+                await Task.Delay(1100, _cancellationTokenSource.Token);
+            }
+            catch(TaskCanceledException)
+            {
+                return;
+            }
+            
+            CreateBottomPlayerEntry(playerEntry.GetComponent<LeaderboardEntryDisplay>().transform);
 
             if (layoutGroup != null)
                 layoutGroup.enabled = true;
@@ -445,7 +468,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             {
                 _siblingMovementIndex++;
                 
-                entryDisplay.UpRankByOne();
+                entryDisplay.ResetRankToSavedRank();
                 playerEntryDisplay.LowerRankByOne();
                 
                 if (!LeanTween.isTweening(entryDisplay.ThisTransform.gameObject))
@@ -553,6 +576,30 @@ namespace LionStudios.Suite.Leaderboards.Fake
             bottomPlayerRectTransform.anchoredPosition = Vector2.zero;
             bottomPlayerRectTransform.localScale = Vector3.one;
             bottomPlayerRectTransform.gameObject.SetActive(false);
+
+            var actualPlayerDisplay = playerEntry.GetComponent<LeaderboardEntryDisplay>();
+            var bottomPlayerDisplay = bottomPlayerRectTransform.GetComponent<LeaderboardEntryDisplay>();
+            bottomPlayerDisplay.Init(actualPlayerDisplay._rank, actualPlayerDisplay._participantData, actualPlayerDisplay._isPlayer);
+        }
+
+        private void OnDisable()
+        {
+            ResetData();
+        }
+
+        private void ResetData()
+        {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
+            _cancellationTokenSource = new CancellationTokenSource();
+            
+            //Reset animation if already playing
+            LeanTween.cancelAll(true);
+            
+            ToggleLayoutActivation(true);
+            
+            Canvas.ForceUpdateCanvases();
+            _isDataAlreadyUpdating = false;
         }
     }
 }

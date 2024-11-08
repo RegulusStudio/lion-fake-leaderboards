@@ -82,7 +82,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
                 LeaguesAnalytics.FireLeagueEndEvents(LeaguesAnalytics.MissionType.Abandoned, leaguesManager, scores);
             }
-            
+            recapTitleLbl.fontSharedMaterial = completedLeague.nameMaterial;
+            recapMessageLbl.fontSharedMaterial = completedLeague.nameMaterial;
+                
             leaguesManager.UpdateLeaderboardData();
 
             if (rewards != null && rewards.isBoxed)

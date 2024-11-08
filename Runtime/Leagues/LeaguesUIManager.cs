@@ -35,7 +35,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
             leaderboardScreen.Init(this);
             offerScreen.Init(this);
             offerScreen.OnContinue += ShowUsernameScreen;
-            usernamePopupScreen.OnPopupClosed += JoinLeague;
+            LeaderboardEntryDisplay.OnEditUsernameButtonClick += ShowUsernameScreen;
+            LeagueUsernamePopupScreen.OnPopupClosed += JoinLeague;
         }
 
         private void ShowUsernameScreen()
@@ -46,7 +47,12 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         protected virtual void JoinLeague()
         {
-            usernamePopupScreen.Hide();
+            if (leaguesManager.HasJoined)
+            {
+                Debug.Log("League already joined!");
+                return;
+            }
+            
             leaguesManager.HasJoined = true;
             LeaguesAnalytics.FireLeagueJoinedEvent(leaguesManager.leagues, leaguesManager.leagues[leaguesManager.CurrentLeague].name, leaguesManager.CurrentLeague.ToString());
             ShowLeagueUI();

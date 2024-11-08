@@ -28,10 +28,10 @@ RectTransform:
   m_GameObject: {fileID: 2564306729778656233}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.2, y: 2.2, z: 2.2}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4304956931370406165}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -118,9 +118,9 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4304956931370406165}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -151,6 +151,7 @@ MonoBehaviour:
   boxPrefab: {fileID: 4408307589038279147, guid: bc2c36844302b427a969916aa7e4c113,
     type: 3}
   forceUnboxed: 0
+  rewardsContainer: {fileID: 0}
 --- !u!114 &706980686065290279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,12 +207,12 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2120021950758511182}
   - {fileID: 6255950075173769161}
   - {fileID: 6153217756963589675}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -269,17 +270,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconImg: {fileID: 7000523902501582429}
+  additionalIconImgs: []
   nameLbl: {fileID: 0}
   colorizeIcon: 1
   currentIconColor: {r: 1, g: 1, b: 1, a: 1}
   normalIconColor: {r: 1, g: 1, b: 1, a: 0.5019608}
-  currentLeagueScale: 1.5
+  currentLeagueScale: 2
   normalScale: 1
   backgroundImg: {fileID: 0}
   currentBackgroundSprite: {fileID: 0}
   normalBackgroundSprite: {fileID: 0}
   iconContainer: {fileID: 4304956931370406165}
-  useAltIcon: 1
   suffix: 
   capitalizeName: 0
   currentExtraGO: {fileID: 2564306729778656233}
@@ -313,9 +314,9 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4304956931370406165}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

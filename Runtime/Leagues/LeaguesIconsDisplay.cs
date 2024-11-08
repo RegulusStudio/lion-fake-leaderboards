@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LionStudios.Suite.Core.LeanTween;
 using UnityEngine;
@@ -21,6 +22,13 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] private Transform initialLeaguesPosition;
 
         private List<LeagueDisplay> leagueDisplays = new List<LeagueDisplay>();
+        private List<int> tweenIds = new List<int>();
+        private VerticalLayoutGroup verticalLayoutGroup;
+
+        private void Awake()
+        {
+            verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();   
+        }
 
         public void Init(List<League> leagues, int current)
         {
@@ -59,8 +67,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
 
-            GetComponent<VerticalLayoutGroup>().enabled = false;
-
+            UpdateVerticalLayoutStatus(false);
+            tweenIds.Clear();
+            
             for (int i = 0; i < leagueDisplays.Count; i++)
             {
                 LeagueDisplay leagueDisplay = leagueDisplays[i];
@@ -68,7 +77,25 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 Vector3 targetPosition = leagueDisplay.gameObject.transform.position;
                 leagueDisplay.transform.position = initialLeaguesPosition.position;
 
-                LeanTween.move(leagueDisplay.gameObject, targetPosition, 1.5f).setEase(LeanTweenType.easeInOutBack).setDelay(i * 0.2f);
+                int tweenId = LeanTween.move(leagueDisplay.gameObject, targetPosition, 1.5f).setEase(LeanTweenType.easeInOutBack).setDelay(i * 0.2f).id;
+                tweenIds.Add(tweenId);
+            }
+        }
+        
+        private void OnDisable()
+        {
+            for (int i = 0; i < tweenIds.Count; i++)
+            {
+                LeanTween.cancel(tweenIds[i]);
+            }
+            UpdateVerticalLayoutStatus(true);
+        }
+
+        private void UpdateVerticalLayoutStatus(bool state)
+        {
+            if (verticalLayoutGroup != null)
+            {
+                verticalLayoutGroup.enabled = state;
             }
         }
     }

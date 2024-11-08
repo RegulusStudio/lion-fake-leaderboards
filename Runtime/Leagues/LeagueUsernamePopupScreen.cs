@@ -13,7 +13,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public Button continueButton; 
         public Button closeButton; 
         
-        public event Action OnPopupClosed;
+        internal static event Action OnPopupClosed;
 
         public static string LeaguesUsername
         {
@@ -35,6 +35,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             }
             
             OnPopupClosed?.Invoke();
+            Hide();
         }
     }
 }

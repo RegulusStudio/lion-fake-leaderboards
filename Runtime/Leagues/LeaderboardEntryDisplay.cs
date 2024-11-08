@@ -1,5 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LionStudios.Suite.Leaderboards.Fake
@@ -18,6 +20,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] private Sprite playerBgSprite;
         [SerializeField] private Color playerLblColor = new Color(0.8f, 0.7f, 0f);
         [SerializeField] private bool updateRankLabelColor = true;
+        [SerializeField] private Button editUsernameButton;
 
         [SerializeField] private RankRewardsDisplay rewardsDisplay;
 
@@ -27,16 +30,21 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         private bool firstInit = true;
         private Canvas _parentCanvas;
+        private RectTransform _nameLblRectTransform;
 
-        internal int _rank;
-        internal ParticipantData _participantData;
-        internal bool _isPlayer;
+        internal int _rank { private set; get; }
+        private int _savedRank;
+        internal ParticipantData _participantData { private set; get; }
+        internal bool _isPlayer { private set; get; }
 
         public Transform ThisTransform { private set; get; }
         
+        internal static Action OnEditUsernameButtonClick;
+
         public void Init(int rank, ParticipantData participantData, bool isPlayer)
         {
             ThisTransform = this.transform;
+            _nameLblRectTransform = nameLbl.GetComponent<RectTransform>();
             
             if (_parentCanvas == null)
             {
@@ -59,13 +67,22 @@ namespace LionStudios.Suite.Leaderboards.Fake
             }
 
             firstInit = false;
-            
+
+            LeagueUsernamePopupScreen.OnPopupClosed += UpdateDataOnUsernamePopupClose;
+            SetEditUsernameListener();
             UpdateData(rank, participantData, isPlayer);
+            UpdateDataOnUsernamePopupClose();
+        }
+
+        private void OnEnable()
+        {
+            UpdateDataOnUsernamePopupClose();
         }
 
         public void UpdateData(int rank, ParticipantData participantData, bool isPlayer)
         {
             _rank = rank;
+            _savedRank = rank;
             _participantData = participantData;
 
             if (isPlayer)
@@ -77,6 +94,15 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 if (rankLbl != null && updateRankLabelColor)
                     rankLbl.color = playerLblColor;
                 nameLbl.color = playerLblColor;
+
+                //Listeners
+                if (editUsernameButton != null)
+                {
+                    editUsernameButton.gameObject.SetActive(true);
+                    SetEditUsernameListener();
+                }
+                LeagueUsernamePopupScreen.OnPopupClosed -= UpdateDataOnUsernamePopupClose;
+                LeagueUsernamePopupScreen.OnPopupClosed += UpdateDataOnUsernamePopupClose;
             }
             else
             {
@@ -86,6 +112,14 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 if (rankLbl != null)
                     rankLbl.color = _normalRankLblColor;
                 nameLbl.color = _normalNameLbkColor;
+                
+                //Listeners
+                if (editUsernameButton != null)
+                {
+                    editUsernameButton.gameObject.SetActive(false);
+                    editUsernameButton.onClick.RemoveAllListeners();
+                }
+                LeagueUsernamePopupScreen.OnPopupClosed -= UpdateDataOnUsernamePopupClose;
             }
             
             if (rankImg != null && rank < rankSprites.Length || rankLbl == null)
@@ -107,10 +141,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
             if (isPlayer)
             {
-                if (!string.IsNullOrEmpty(LeagueUsernamePopupScreen.LeaguesUsername))
-                {
-                    nameLbl.text = LeagueUsernamePopupScreen.LeaguesUsername;
-                }
+                UpdatePlayerName();
             }
             
             scoreLbl.text = participantData.score.ToString();
@@ -121,6 +152,14 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
                 RankRewards rankRewards = leaguesManager.leagues[leaguesManager.CurrentLeague].GetRankRewardsCopy(rank);
                 rewardsDisplay.Init(rankRewards, true);
+            }
+        }
+
+        private void UpdateDataOnUsernamePopupClose()
+        {
+            if (_isPlayer)
+            {
+                UpdateData(_rank, _participantData, _isPlayer);
             }
         }
 
@@ -149,18 +188,46 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         internal void LowerRankByOne()
         {
+            int localSavedRank = _rank;
             UpdateData(_rank - 1, _participantData, _isPlayer);
+            _savedRank = localSavedRank;
         }
         
-        internal void UpRankByOne()
+        internal void ResetRankToSavedRank()
         {
-            UpdateData(_rank + 1, _participantData, _isPlayer);
+            UpdateData(_savedRank, _participantData, _isPlayer);
         }
 
         internal void CustomRank(int rank)
         {
+            int localSavedRank = _rank;
             UpdateData(rank, _participantData, _isPlayer);
+            _savedRank = localSavedRank;
         }
-        
+
+        private void UpdatePlayerName()
+        {
+            if (!string.IsNullOrEmpty(LeagueUsernamePopupScreen.LeaguesUsername))
+            {
+                nameLbl.text = LeagueUsernamePopupScreen.LeaguesUsername;
+            }
+        }
+
+        private void SetEditUsernameListener()
+        {
+            if (editUsernameButton != null)
+            {
+                editUsernameButton.onClick.RemoveAllListeners();
+                editUsernameButton.onClick.AddListener(() =>
+                {
+                    OnEditUsernameButtonClick?.Invoke();
+                });
+            }
+        }
+
+        private void OnDestroy()
+        {
+            LeagueUsernamePopupScreen.OnPopupClosed -= UpdateDataOnUsernamePopupClose;
+        }
     }
 }

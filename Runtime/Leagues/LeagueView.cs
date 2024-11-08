@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -7,24 +8,21 @@ namespace LionStudios.Suite.Leaderboards.Fake
     {
         [SerializeField] private LeaderboardEntriesDisplay entriesDisplay;
         [SerializeField] private CurrentLeagueNameDisplay _currentLeagueNameDisplay;
-        [SerializeField] private RemainingTimeDisplay _timeDisplay;
         
-        private LeaguesManager leaguesManager;
+        private LeaguesManager leaguesManager => LeaguesManager.Instance;
         private bool isInitializing;
 
-        private const int InitialDelay = 40;
+        private bool _isAlreadyDataUpdated = false;
 
-        private async void Awake()
+        private void Awake()
         {
-            await Task.Delay(InitialDelay);
-            leaguesManager = LeaguesManager.Instance;
-            if (LeaguesManager.Instance.IsInitialized)
+            if (leaguesManager.IsInitialized)
             {
                 Init();
             }
             else
             {
-                LeaguesManager.Instance.OnLeagueInitialized += Init;
+                leaguesManager.OnLeagueInitialized += Init;
             }
         }
 
@@ -38,12 +36,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         private void Update()
         {
-            if(leaguesManager == null)
-                return;
-            
-            bool hasOutdatedScores = leaguesManager.HasOutdatedScores();
-            if (hasOutdatedScores)
+            if (!_isAlreadyDataUpdated && !leaguesManager.IsAnyLeagueActiveInCurrentTime())
             {
+                _isAlreadyDataUpdated = true;
                 UpdateData(false, false);
             }
         }
@@ -71,17 +66,12 @@ namespace LionStudios.Suite.Leaderboards.Fake
             isInitializing = false;
 
             _currentLeagueNameDisplay.Init(leaguesManager);
-            _timeDisplay.Init(leaguesManager);
             SetLeaderboardUpdate();
         }
 
         private void SetLeaderboardUpdate()
         {
-            bool hasOutdatedScores = leaguesManager.HasOutdatedScores();
-            if (!hasOutdatedScores)
-            {
-                UpdateData(true, true);
-            }
+            UpdateData(true, true);
         }
 
         private void UpdateData(bool focusOnPlayer, bool animated)
@@ -93,6 +83,11 @@ namespace LionStudios.Suite.Leaderboards.Fake
             LeaderboardCalculatedData scores =
                 hasOutdatedScores ? leaguesManager.GetStoredScores() : leaguesManager.GetCurrentScores();
             entriesDisplay.UpdateData(scores, focusOnPlayer, animated);
+        }
+
+        private void OnDisable()
+        {
+            _isAlreadyDataUpdated = false;
         }
     }
 }

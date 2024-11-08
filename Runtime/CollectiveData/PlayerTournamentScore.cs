@@ -246,6 +246,16 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             return tournamentsProgresses.tournaments.Any(kvp => kvp.Key < currentStartTime.ToUnixTime());
         }
+        
+        internal bool IsAnyLeagueActiveInCurrentTime(DateTime currentStartTime)
+        {
+            if (tournamentsProgresses == null || tournamentsProgresses.tournaments == null)
+            {
+                return false;
+            }
+            
+            return tournamentsProgresses.tournaments.ContainsKey(currentStartTime.ToUnixTime());
+        }
 
         public void ClearPastScores(DateTime currentStartTime)
         {

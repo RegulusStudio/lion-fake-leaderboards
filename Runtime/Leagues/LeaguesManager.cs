@@ -15,9 +15,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         public string name;
         public Sprite icon;
-        public Sprite altIcon;
         public Material nameMaterial;
         public Sprite nameBackground;
+        public Sprite endScreenLeagueBg;
         public RankRewards promotionRewards;
         public List<RankRewards> rewards;
         public int minBotScore = 10;
@@ -173,6 +173,11 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public bool HasOutdatedScores()
         {
             return Leaderboard.scoresStorage.HasOutdatedScores(LastStartTime);
+        }
+        
+        internal bool IsAnyLeagueActiveInCurrentTime()
+        {
+            return Leaderboard.scoresStorage.IsAnyLeagueActiveInCurrentTime(LastStartTime);
         }
 
         public LeaderboardCalculatedData GetCurrentScores()

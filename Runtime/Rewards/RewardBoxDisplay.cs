@@ -11,6 +11,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
     {
         [SerializeField] private Image iconImg;
         [SerializeField] private GameObject rotatingLights;
+        [SerializeField] private Animation shineScale;
 
         [Header("Rotating Light Parameters")]
         public float rotationSpeed = 10f;
@@ -76,6 +77,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         internal void OpenChest()
         {
             iconImg.sprite = rankRewards.openedBoxSprite;
+            shineScale.Play();
         }
         
     }

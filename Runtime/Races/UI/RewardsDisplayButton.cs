@@ -22,6 +22,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         public void Init(RaceConfig raceConfig, RaceManager raceMan, int index)
         {
+            PopUpParent.transform.DestroyChildrenImmediate();
             _raceConfiguration = raceConfig;
             _raceManager = raceMan;
             if (index > 2)
