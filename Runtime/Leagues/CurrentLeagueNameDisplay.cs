@@ -27,7 +27,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             League currentLeague = leaguesManager.leagues[leaguesManager.CurrentLeague];
             text.text = $"{currentLeague.name}{suffix}";
-            if (setTextMaterial) text.fontSharedMaterial = currentLeague.nameMaterial;
+            if (setTextMaterial && currentLeague.nameMaterial != null) text.fontSharedMaterial = currentLeague.nameMaterial;
             if (textBackground != null) textBackground.sprite = currentLeague.nameBackground;
         }
     }
