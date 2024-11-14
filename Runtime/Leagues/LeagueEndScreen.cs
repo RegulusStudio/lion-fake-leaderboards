@@ -33,9 +33,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         private Canvas sourceCanvas;
         private bool ChestOpened;
-        internal int rank;
+        public int rank;
 
-        public void Show(LeaderboardCalculatedData scores)
+        public virtual void Show(LeaderboardCalculatedData scores)
         // Init(LeaguesManager manager,LeaguesUIManager uiManager, LeaderboardCalculatedData scores, int promoteCount)
         {
             base.Show();

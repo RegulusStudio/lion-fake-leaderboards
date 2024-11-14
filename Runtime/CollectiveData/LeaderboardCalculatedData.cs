@@ -4,8 +4,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
 {
     public class LeaderboardCalculatedData
     {
-        internal int playerIndex;
-        internal List<ParticipantData> participantDatas;
+        public int playerIndex;
+        public List<ParticipantData> participantDatas;
 
         public int GetPlayerIndex() => playerIndex;
         public List<ParticipantData> GetParticipantList() => participantDatas;

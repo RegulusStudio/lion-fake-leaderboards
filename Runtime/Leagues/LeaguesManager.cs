@@ -342,7 +342,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
            defaultUIManager.ShowLeagueUI();
         }
         
-        internal void ClaimRewards(List<LeaderboardReward> rewards)
+        public void ClaimRewards(List<LeaderboardReward> rewards)
         {
             foreach (LeaderboardReward reward in rewards)
             {
@@ -367,17 +367,17 @@ namespace LionStudios.Suite.Leaderboards.Fake
             Leaderboard.scoresStorage.IncrementPlayerScore(amount, Leaderboard.GetLeaderboardData().playerProfile, LastStartTime, NextEndTime);
         }
        
-        internal void LeagueUp()
+        public void LeagueUp()
         {
             CurrentLeague = Mathf.Min(CurrentLeague + 1, leagues.Count);
         }
         
-        internal void LeagueDown()
+        public void LeagueDown()
         {
             CurrentLeague = Mathf.Max(CurrentLeague - 1, 0);
         }
         
-        internal void UpdateLeaderboardData()
+        public void UpdateLeaderboardData()
         {
             League current = leagues[CurrentLeague];
             Leaderboard.Init(LastStartTime, current.minBotScore, current.maxBotScore, current.targetWinRatio);
