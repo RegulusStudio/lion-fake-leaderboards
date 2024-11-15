@@ -13,6 +13,10 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] private LeagueLeaderboardScreen leaderboardScreen;
         [SerializeField] private LeagueEndScreen endScreen;
         [SerializeField] private LeagueInfoScreen infoScreen;
+
+        public LeagueLeaderboardScreen LeaderboardScreen {
+            get { return leaderboardScreen; }
+        }
         
         private LeaguesManager leaguesManager;
 
