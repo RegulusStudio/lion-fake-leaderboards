@@ -218,6 +218,39 @@ namespace LionStudios.Suite.Leaderboards.Fake
             return result;
         }
 
+        public RankRewards GetRankAndPromotionRewards(int rank, int baseLeagueIndex, int toLeagueIndex)
+        {
+            RankRewards result = null;
+
+            if (baseLeagueIndex < leagues.Count)
+            {
+                var rankRewards = leagues[baseLeagueIndex].GetRankRewardsCopy(rank);
+                if (result == null)
+                {
+                    result = rankRewards;
+                }
+                else
+                {
+                    result.Rewards.AddRange(rankRewards.Rewards);
+                }
+            }
+
+            if (toLeagueIndex > baseLeagueIndex && toLeagueIndex < leagues.Count)
+            {
+                var promoteRewards = leagues[toLeagueIndex].GetPromotionRewardsCopy();
+                if (result == null)
+                {
+                    result = promoteRewards;
+                }
+                else
+                {
+                    result.Rewards.AddRange(promoteRewards.Rewards);
+                }
+            }
+            
+            return result;
+        }
+
         public LeaderboardCalculatedData GetPastScores(TournamentProgress pastScores)
         {
             DateTime startTime = Leaderboard.scoresStorage.GetStartTime(pastScores);
