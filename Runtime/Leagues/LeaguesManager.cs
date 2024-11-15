@@ -130,7 +130,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         public Action OnLeagueInitialized;
 
-        internal event Action OnConfigOverridden;
+        public event Action OnConfigOverridden;
 
         public static Func<bool,string> CustomInfoCollectionTxt;
         public static bool sessionEventFired = false;
