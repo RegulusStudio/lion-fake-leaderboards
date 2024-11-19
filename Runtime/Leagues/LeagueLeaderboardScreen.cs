@@ -13,6 +13,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         [SerializeField] private TMP_Text continueLbl;
         [SerializeField] public RankRewardsDisplay rewardsPopup;
         [SerializeField] private CurrentLeagueNameDisplay leagueName;
+        [SerializeField] private bool isAnimateOnEnable = false;
         
         private bool isInitializing;
 
@@ -36,7 +37,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             if (!isInitializing)
             {
-                UpdateData(true, true);
+                UpdateData(true, isAnimateOnEnable);
                 entriesDisplay.FocusOnPlayer();
                 leaguesIconsDisplay.Init(leaguesManager.leagues, leaguesManager.CurrentLeague);
                 leagueName.Init(leaguesManager);

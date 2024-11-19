@@ -8,6 +8,11 @@ namespace LionStudios.Suite.Leaderboards.Fake
     {
         [SerializeField] private LeaderboardEntriesDisplay entriesDisplay;
         [SerializeField] private CurrentLeagueNameDisplay _currentLeagueNameDisplay;
+
+        public LeaderboardEntriesDisplay EntriesDisplay
+        {
+            get { return entriesDisplay; }
+        }
         
         private LeaguesManager leaguesManager => LeaguesManager.Instance;
         private bool isInitializing;
@@ -30,7 +35,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             if (!isInitializing && leaguesManager != null)
             {
-                SetLeaderboardUpdate();
+                UpdateData(true, true);
             }
         }
 
@@ -39,7 +44,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             if (!_isAlreadyDataUpdated && !leaguesManager.IsAnyLeagueActiveInCurrentTime())
             {
                 _isAlreadyDataUpdated = true;
-                UpdateData(false, false);
+                UpdateData(true, false);
             }
         }
 
@@ -66,15 +71,11 @@ namespace LionStudios.Suite.Leaderboards.Fake
             isInitializing = false;
 
             _currentLeagueNameDisplay.Init(leaguesManager);
-            SetLeaderboardUpdate();
+            UpdateData(true, false);
+            entriesDisplay.FocusOnPlayer();
         }
 
-        private void SetLeaderboardUpdate()
-        {
-            UpdateData(true, true);
-        }
-
-        private void UpdateData(bool focusOnPlayer, bool animated)
+        public void UpdateData(bool focusOnPlayer, bool animated)
         {
             if (leaguesManager == null) return;
 

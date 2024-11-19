@@ -48,6 +48,11 @@ namespace LionStudios.Suite.Leaderboards.Fake
             offerScreen.Hide();
             usernamePopupScreen.Show();
         }
+
+        public void ShowInfoScreen()
+        {
+            infoScreen.gameObject.SetActive(true);
+        }
         
         protected virtual void JoinLeague()
         {

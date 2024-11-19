@@ -124,7 +124,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public float minPlayerAnimationTime = 1f;
 
         [Header("Prefab References (Do not change)")] 
-        [SerializeField] private LeaguesUIManager defaultUIManager;
+        [SerializeField] public LeaguesUIManager defaultUIManager;
 
         internal bool IsInitialized { private set; get; }
 
