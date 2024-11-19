@@ -8,13 +8,13 @@ namespace LionStudios.Suite.Leaderboards.Fake
     public class CurrentLeagueNameDisplay : MonoBehaviour
     {
 
-        [SerializeField] private string suffix;
-        [SerializeField] private bool setTextMaterial = true;
-        [SerializeField] private Image textBackground;
+        [SerializeField] protected string suffix;
+        [SerializeField] protected bool setTextMaterial = true;
+        [SerializeField] protected Image textBackground;
 
-        private TMP_Text text;
+        protected TMP_Text text;
 
-        private LeaguesManager leaguesManager;
+        protected LeaguesManager leaguesManager;
 
         public void Init(LeaguesManager league)
         {
@@ -23,7 +23,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             InitializeValues();
         }
 
-        private void InitializeValues()
+        protected virtual void InitializeValues()
         {
             League currentLeague = leaguesManager.leagues[leaguesManager.CurrentLeague];
             text.text = $"{currentLeague.name}{suffix}";
