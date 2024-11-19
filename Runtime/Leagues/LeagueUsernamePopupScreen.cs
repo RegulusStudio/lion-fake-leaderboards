@@ -24,7 +24,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         private void Start()
         {
             continueButton.onClick.AddListener(ContinueButtonPressed);
-            closeButton.onClick.AddListener(()=> OnPopupClosed?.Invoke());
+            closeButton.onClick.AddListener(CloseButtonPressed);
         }
 
         private void ContinueButtonPressed()
@@ -34,6 +34,16 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 LeaguesUsername = inputField.text;
             }
             
+            ClosePopup();
+        }
+
+        private void CloseButtonPressed()
+        {
+            ClosePopup();
+        }
+
+        private void ClosePopup()
+        {
             OnPopupClosed?.Invoke();
             Hide();
         }
