@@ -41,6 +41,11 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         internal static Action OnEditUsernameButtonClick;
 
+        private void Start()
+        {
+            LeagueUsernamePopupScreen.OnPopupClosed += UpdateDataOnUsernamePopupClose;
+        }
+
         public void Init(int rank, ParticipantData participantData, bool isPlayer)
         {
             ThisTransform = this.transform;
@@ -68,7 +73,6 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
             firstInit = false;
 
-            LeagueUsernamePopupScreen.OnPopupClosed += UpdateDataOnUsernamePopupClose;
             SetEditUsernameListener();
             UpdateData(rank, participantData, isPlayer);
             UpdateDataOnUsernamePopupClose();
@@ -101,8 +105,6 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     editUsernameButton.gameObject.SetActive(true);
                     SetEditUsernameListener();
                 }
-                LeagueUsernamePopupScreen.OnPopupClosed -= UpdateDataOnUsernamePopupClose;
-                LeagueUsernamePopupScreen.OnPopupClosed += UpdateDataOnUsernamePopupClose;
             }
             else
             {
@@ -119,7 +121,6 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     editUsernameButton.gameObject.SetActive(false);
                     editUsernameButton.onClick.RemoveAllListeners();
                 }
-                LeagueUsernamePopupScreen.OnPopupClosed -= UpdateDataOnUsernamePopupClose;
             }
             
             if (rankImg != null && rank < rankSprites.Length || rankLbl == null)
@@ -157,6 +158,12 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         private void UpdateDataOnUsernamePopupClose()
         {
+            if (this == null || transform == null || transform.gameObject == null)
+            {
+                Debug.LogError("LeaderboardEntryDisplay.UpdateDataOnUsernamePopupClose: ERROR! object already destroyed");
+                return;
+            }
+
             if (_isPlayer)
             {
                 UpdateData(_rank, _participantData, _isPlayer);

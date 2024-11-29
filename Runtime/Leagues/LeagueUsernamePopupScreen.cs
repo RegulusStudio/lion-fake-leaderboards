@@ -44,8 +44,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         private void ClosePopup()
         {
-            OnPopupClosed?.Invoke();
             Hide();
+            OnPopupClosed?.Invoke();
         }
     }
 }
