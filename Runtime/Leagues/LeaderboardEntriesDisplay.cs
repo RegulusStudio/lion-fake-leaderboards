@@ -269,6 +269,10 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 entryDisplay = playerKvPair.Key.GetComponent<LeaderboardEntryDisplay>();
                 entryPlayerDis = entryDisplay;
 
+                if (entryDisplay == null) {
+                    Firebase.Crashlytics.Crashlytics.Log("League.AnimateOnlyPlayerEntry: `entryDisplay` is null");
+                }
+
                 if (IsIncreasingPosition(previousPosition, playerEntry.localPosition))
                 {
                     int numberOfPlayerRankChanged = 0;

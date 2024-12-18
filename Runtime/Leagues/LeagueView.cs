@@ -79,6 +79,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             if (leaguesManager == null) return;
 
+            Firebase.Crashlytics.Crashlytics.Log("League: Update data on LeagueView script");
+
             Debug.Log("Updating Leaderboard Data");
             bool hasOutdatedScores = leaguesManager.HasOutdatedScores();
             LeaderboardCalculatedData scores =

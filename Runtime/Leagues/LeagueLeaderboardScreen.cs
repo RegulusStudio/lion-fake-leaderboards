@@ -60,6 +60,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         public void UpdateData(bool focusOnPlayer, bool animated)
         {
+            Firebase.Crashlytics.Crashlytics.Log("League: Update data on LeagueLeaderboardScreen script");
+
             bool hasOutdatedScores = leaguesManager.HasOutdatedScores();
             LeaderboardCalculatedData scores = hasOutdatedScores ? leaguesManager.GetStoredScores() : leaguesManager.GetCurrentScores();
             entriesDisplay.UpdateData(scores, focusOnPlayer, animated);
