@@ -126,6 +126,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                         }
                         else
                         {
+                            /*
                             for (var i = 0; i < rewards.Rewards.Count; i++)
                             {
                                 var reward = rewards.Rewards[i];
@@ -138,6 +139,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                                     ScreenAnimations);
                                 await Task.Delay(150);
                             }
+                            */
                         }
                     }
                 }

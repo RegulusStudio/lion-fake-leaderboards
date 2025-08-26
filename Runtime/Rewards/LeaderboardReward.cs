@@ -12,6 +12,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         [FormerlySerializedAs("reward_img")]
         public Sprite sprite;
-        
+
+        public LeaderboardReward(string id, int amount) : base(id, amount) {}
     }
 }

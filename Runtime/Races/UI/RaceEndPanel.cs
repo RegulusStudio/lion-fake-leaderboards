@@ -75,6 +75,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     await Task.Delay(150);
                     Reward reward = playerReceivedRewards[i];
                     LionGameInterfaces.Transactions.Earn(reward);
+                    /*
                     RewardFlyAnimation.Spawn(
                         allSpawnedRewards[i].rewardImg,
                         reward.amount,
@@ -82,6 +83,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                         sourceCanvas,
                         reward.id,
                         ScreenAnimations);
+                        */
                 }   
             }
             
