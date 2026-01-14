@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using LionStudios.Suite.Core;
 using TMPro;
@@ -121,7 +122,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             }
         }
 
-        private void OnAdWatchCompleted(bool success)
+        private void OnAdWatchCompleted(bool success, Dictionary<string, object> returnData)
         {
             if (success)
             {

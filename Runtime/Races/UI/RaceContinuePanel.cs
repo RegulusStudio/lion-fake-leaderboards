@@ -159,7 +159,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             }
         }
 
-        private void OnAdWatchCompleted(bool success)
+        private void OnAdWatchCompleted(bool success, Dictionary<string, object> returnData)
         {
             if (success)
             {
