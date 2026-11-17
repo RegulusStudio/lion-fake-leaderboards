@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using LionStudios.Suite.Core;
-using LionStudios.Suite.UiCommons;
+using LionStudios.Suite.Core.UICommons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using IDI.LionCompat;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -74,7 +75,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 {
                     await Task.Delay(150);
                     Reward reward = playerReceivedRewards[i];
-                    LionGameInterfaces.Transactions.Earn(reward);
+                    LionGameInterfaces.Transactions.Earn(reward.id, reward.amount);
                     /*
                     RewardFlyAnimation.Spawn(
                         allSpawnedRewards[i].rewardImg,

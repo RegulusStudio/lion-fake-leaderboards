@@ -5,6 +5,7 @@ using LionStudios.Suite.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using IDI.LionCompat;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {

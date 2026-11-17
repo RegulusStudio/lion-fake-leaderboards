@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LionStudios.Suite.Analytics;
+using IDI.LionCompat;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -17,7 +18,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public static void FireLeagueJoinedEvent(List<League> leagues, string leagueName, string currentLeague)
         {
             string missionId = $"league_tournament_{currentLeague}";
-            LionAnalytics.MissionStarted(false, "league", leagueName, missionId);
+            LionCompatAnalytics.MissionStarted(false, "league", leagueName, missionId);
         }
 
         public static void FireLeagueSessionEvent(LeaguesManager instance)
@@ -73,7 +74,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
             string missionId = $"league_tournament_{instance.CurrentLeague}";
 
-            LionAnalytics.MissionStep(false, "league", instance.leagues[instance.CurrentLeague].name, missionId, instance.GetCurrentScores().participantDatas[rank].score, null, additionalData);
+            LionCompatAnalytics.MissionStep(false, "league", instance.leagues[instance.CurrentLeague].name, missionId, instance.GetCurrentScores().participantDatas[rank].score, null, additionalData);
         }
 
         public static void FireLeagueCheckEvent(List<League> leagues, int currentLeague, LeaderboardCalculatedData scores, int promoteCount)
@@ -113,7 +114,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             additionalData.Add("league_level", leagues[currentLeague].name);
             additionalData.Add("zone", LeagueLeaderboardScreen.CheckForZone(currentLeague, leagues.Count, rank, promoteCount, scores.participantDatas.Count).ToString());
             string missionId = $"league_tournament_{currentLeague}";
-            LionAnalytics.MissionStep(false, "league", leagues[currentLeague].name, missionId, scores.participantDatas[rank].score, null, additionalData);
+            LionCompatAnalytics.MissionStep(false, "league", leagues[currentLeague].name, missionId, scores.participantDatas[rank].score, null, additionalData);
         }
 
 
@@ -134,15 +135,15 @@ namespace LionStudios.Suite.Leaderboards.Fake
             {
                 case MissionType.Completed:
                     additionalData.Add("zone", "promotion");
-                    LionAnalytics.MissionCompleted(false, "league", manager.leagues[manager.CurrentLeague - 1].name, leagueCounter, currentTournamentPoints, null, additionalData);
+                    LionCompatAnalytics.MissionCompleted(false, "league", manager.leagues[manager.CurrentLeague - 1].name, leagueCounter, currentTournamentPoints, null, additionalData);
                     break;
                 case MissionType.Failed:
                     additionalData.Add("zone", "demotion");
-                    LionAnalytics.MissionFailed(false, "league", manager.leagues[manager.CurrentLeague + 1].name, leagueCounter, currentTournamentPoints, null, additionalData);
+                    LionCompatAnalytics.MissionFailed(false, "league", manager.leagues[manager.CurrentLeague + 1].name, leagueCounter, currentTournamentPoints, null, additionalData);
                     break;
                 case MissionType.Abandoned:
                     additionalData.Add("zone", "stable");
-                    LionAnalytics.MissionAbandoned(false, "league", manager.leagues[manager.CurrentLeague].name, leagueCounter, currentTournamentPoints, null, additionalData);
+                    LionCompatAnalytics.MissionAbandoned(false, "league", manager.leagues[manager.CurrentLeague].name, leagueCounter, currentTournamentPoints, null, additionalData);
                     break;
             }
         }

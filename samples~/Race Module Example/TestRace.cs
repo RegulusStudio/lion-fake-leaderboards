@@ -1,8 +1,10 @@
 using LionStudios.Suite.Core;
+using LionStudios.Suite.Core.UICommons;
 using LionStudios.Suite.Leaderboards.Fake;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using IDI.LionCompat;
 
 public class TestRace : MonoBehaviour
 {

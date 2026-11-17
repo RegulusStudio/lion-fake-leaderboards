@@ -4,6 +4,7 @@ using System.Linq;
 using LionStudios.Suite.Core;
 using Newtonsoft.Json;
 using UnityEngine;
+using LionRemoteStorage = LionStudios.Suite.RemoteStorage.RemoteStorage;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -137,9 +138,9 @@ namespace LionStudios.Suite.Leaderboards.Fake
         public ScoresStorage(string leaderboardId)
         {
             this.leaderboardId = leaderboardId;
-            if (LionStorage.HasKey(Key))
+            if (LionRemoteStorage.HasKey(Key))
             {
-                string json = LionStorage.GetString(Key);
+                string json = LionRemoteStorage.GetString(Key);
                 tournamentsProgresses = JsonConvert.DeserializeObject<TournamentsProgresses>(json);
                 tournamentsProgresses.ResetContainers(this);
             }
@@ -151,8 +152,8 @@ namespace LionStudios.Suite.Leaderboards.Fake
         
         public void Save()
         {
-            LionStorage.SetString(Key, JsonConvert.SerializeObject(tournamentsProgresses));
-            LionStorage.Save();
+            LionRemoteStorage.SetString(Key, JsonConvert.SerializeObject(tournamentsProgresses));
+            _ = LionRemoteStorage.Save();
         }
         
         public List<StoredPlayerScore> GetStoredScores(string playerId)

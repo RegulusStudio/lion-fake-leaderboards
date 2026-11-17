@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using LionStudios.Suite.Analytics;
 using System;
+using IDI.LionCompat;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -30,7 +31,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             instance.SessionStartRank = (instance.CalculateRaceProgress().playerIndex + 1);
             additionalData.Add("rank_delta", rank_delta + 1);
 
-            LionAnalytics.MissionStep(false, "race", instance.GetCurrentRaceConfig.RaceTitle, "race", playerScore, null, additionalData);
+            LionCompatAnalytics.MissionStep(false, "race", instance.GetCurrentRaceConfig.RaceTitle, "race", playerScore, null, additionalData);
         }
 
         public static void FireCheckEvent(RaceManager instance, int playerScore)
@@ -61,7 +62,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
                 {"step_type", "check"}
             };
 
-            LionAnalytics.MissionStep(false, "race", instance.GetCurrentRaceConfig.RaceTitle, "race", playerScore, null, additionalData);
+            LionCompatAnalytics.MissionStep(false, "race", instance.GetCurrentRaceConfig.RaceTitle, "race", playerScore, null, additionalData);
         }
         
         internal static void SendRaceCompleteEvent(RaceConfig config, int playerScore, int playerRank)
@@ -73,7 +74,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
             if (playerRank == 1)
             {
-                LionAnalytics.MissionCompleted(false,
+                LionCompatAnalytics.MissionCompleted(false,
                     "Race",
                     config.RaceTitle,
                     config.Leaderboard.GetLeaderboardData().leaderboardId,
@@ -84,7 +85,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
             }
             else
             {
-                LionAnalytics.MissionFailed(false,
+                LionCompatAnalytics.MissionFailed(false,
                     "Race",
                     config.RaceTitle,
                     config.Leaderboard.GetLeaderboardData().leaderboardId,

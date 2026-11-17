@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using LionStudios.Suite.Core;
 using UnityEngine;
+using LionRemoteStorage = LionStudios.Suite.RemoteStorage.RemoteStorage;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -68,7 +69,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         public bool JoinedRace
         {
-            get => bool.Parse(LionStorage.GetString(RaceJoinStatus, "false"));
+            get => bool.Parse(LionRemoteStorage.GetString(RaceJoinStatus, "false"));
             internal set
             {
                 if (value)
@@ -76,13 +77,13 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     OnRaceJoined?.Invoke();
                 }
 
-                LionStorage.SetString(RaceJoinStatus, value.ToString(CultureInfo.InvariantCulture));
+                LionRemoteStorage.SetString(RaceJoinStatus, value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
         internal bool DenyOffer
         {
-            get => bool.Parse(LionStorage.GetString(RaceOfferRefuse, "false"));
+            get => bool.Parse(LionRemoteStorage.GetString(RaceOfferRefuse, "false"));
             set
             {
                 if (value)
@@ -90,46 +91,46 @@ namespace LionStudios.Suite.Leaderboards.Fake
                     OnRaceJoinDeclined?.Invoke();
                 }
 
-                LionStorage.SetString(RaceOfferRefuse, value.ToString(CultureInfo.InvariantCulture));
+                LionRemoteStorage.SetString(RaceOfferRefuse, value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
         public DateTime StartTime
         {
-            get => DateTime.Parse(LionStorage.GetString(RaceStartTimePref), CultureInfo.InvariantCulture);
-            set => LionStorage.SetString(RaceStartTimePref, value.ToString(CultureInfo.InvariantCulture));
+            get => DateTime.Parse(LionRemoteStorage.GetString(RaceStartTimePref), CultureInfo.InvariantCulture);
+            set => LionRemoteStorage.SetString(RaceStartTimePref, value.ToString(CultureInfo.InvariantCulture));
         }
 
         public DateTime LastPopUpShowTime
         {
-            get => DateTime.Parse(LionStorage.GetString(AutoShowTime, DateTime.Now.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
-            set => LionStorage.SetString(AutoShowTime, value.ToString(CultureInfo.InvariantCulture));
+            get => DateTime.Parse(LionRemoteStorage.GetString(AutoShowTime, DateTime.Now.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+            set => LionRemoteStorage.SetString(AutoShowTime, value.ToString(CultureInfo.InvariantCulture));
         }
 
         public DateTime EndTime
         {
-            get => DateTime.Parse(LionStorage.GetString(RaceEndTimePref), CultureInfo.InvariantCulture);
-            set => LionStorage.SetString(RaceEndTimePref, value.ToString(CultureInfo.InvariantCulture));
+            get => DateTime.Parse(LionRemoteStorage.GetString(RaceEndTimePref), CultureInfo.InvariantCulture);
+            set => LionRemoteStorage.SetString(RaceEndTimePref, value.ToString(CultureInfo.InvariantCulture));
         }
 
         public bool RaceFinished { get; set; }
 
         public int RaceFinishCount
         {
-            get => LionStorage.GetInt(FinishCounter);
-            set => LionStorage.SetInt(FinishCounter, value);
+            get => LionRemoteStorage.GetInt(FinishCounter);
+            set => LionRemoteStorage.SetInt(FinishCounter, value);
         }
 
         public int SessionStartScore
         {
-            get => LionStorage.GetInt(RACE_SESSION_START_SCORE_KEY, 0);
-            set => LionStorage.SetInt(RACE_SESSION_START_SCORE_KEY, value);
+            get => LionRemoteStorage.GetInt(RACE_SESSION_START_SCORE_KEY, 0);
+            set => LionRemoteStorage.SetInt(RACE_SESSION_START_SCORE_KEY, value);
         }
 
         public int SessionStartRank
         {
-            get => LionStorage.GetInt(RACE_SESSION_START_RANK_KEY, 0);
-            set => LionStorage.SetInt(RACE_SESSION_START_RANK_KEY, value);
+            get => LionRemoteStorage.GetInt(RACE_SESSION_START_RANK_KEY, 0);
+            set => LionRemoteStorage.SetInt(RACE_SESSION_START_RANK_KEY, value);
         }
 
         internal bool raceContinueEligible => currentRaceConfig.AdvancedProperties.ReofferRaceAfterSessionExit && !RaceFinished && JoinedRace;

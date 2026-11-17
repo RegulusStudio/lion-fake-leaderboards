@@ -5,6 +5,8 @@ using LionStudios.Suite.Analytics;
 using LionStudios.Suite.Analytics.Events;
 using UnityEngine;
 using LionStudios.Suite.Core;
+using LionRemoteStorage = LionStudios.Suite.RemoteStorage.RemoteStorage;
+using IDI.LionCompat;
 
 namespace LionStudios.Suite.Leaderboards.Fake
 {
@@ -148,26 +150,26 @@ namespace LionStudios.Suite.Leaderboards.Fake
 
         public bool HasJoined
         {
-            get => LionStorage.GetInt($"{HAS_JOINED_KEY}_{id}") > 0;
-            set => LionStorage.SetInt($"{HAS_JOINED_KEY}_{id}", value ? 1 : 0);
+            get => LionRemoteStorage.GetInt($"{HAS_JOINED_KEY}_{id}") > 0;
+            set => LionRemoteStorage.SetInt($"{HAS_JOINED_KEY}_{id}", value ? 1 : 0);
         }
 
         public int CurrentLeague
         {
-            get => LionStorage.GetInt($"{CURRENT_LEAGUE_KEY}_{id}", 0);
-            private set => LionStorage.SetInt($"{CURRENT_LEAGUE_KEY}_{id}", value);
+            get => LionRemoteStorage.GetInt($"{CURRENT_LEAGUE_KEY}_{id}", 0);
+            private set => LionRemoteStorage.SetInt($"{CURRENT_LEAGUE_KEY}_{id}", value);
         }
 
         public int SessionStartScore
         {
-            get => LionStorage.GetInt(SESSION_START_SCORE_KEY, 0);
-            set => LionStorage.SetInt(SESSION_START_SCORE_KEY, value);
+            get => LionRemoteStorage.GetInt(SESSION_START_SCORE_KEY, 0);
+            set => LionRemoteStorage.SetInt(SESSION_START_SCORE_KEY, value);
         }
 
         public int SessionStartRank
         {
-            get => LionStorage.GetInt(SESSION_START_RANK_KEY, GetCurrentScores().participantDatas.Count);
-            set => LionStorage.SetInt(SESSION_START_RANK_KEY, value);
+            get => LionRemoteStorage.GetInt(SESSION_START_RANK_KEY, GetCurrentScores().participantDatas.Count);
+            set => LionRemoteStorage.SetInt(SESSION_START_RANK_KEY, value);
         }
 
         public bool HasOutdatedScores()
@@ -279,7 +281,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             await TaskWaiter.WaitUntil(() => LionCore.IsInitialized);
             
-            var leagueRemoteConfig = LiveOpsController.GetValue<LeagueRemoteConfig>(LEAGUE_REMOTE_CONFIG_KEY, null);
+            var leagueRemoteConfig = RemoteConfigsController.GetValue<LeagueRemoteConfig>(LEAGUE_REMOTE_CONFIG_KEY, null);
 
             if (leagueRemoteConfig != null)
             {
@@ -379,7 +381,7 @@ namespace LionStudios.Suite.Leaderboards.Fake
         {
             foreach (LeaderboardReward reward in rewards)
             {
-                LionGameInterfaces.Transactions.Earn(reward);
+                LionGameInterfaces.Transactions.Earn(reward.id, reward.amount);
             }
         }
         
